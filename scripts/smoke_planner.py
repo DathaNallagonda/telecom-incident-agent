@@ -1,6 +1,14 @@
 """Day 0 smoke test: solve the unified-planning 'hello world' problem with pyperplan."""
+
 from unified_planning.shortcuts import (
-    BoolType, Fluent, InstantaneousAction, Object, OneshotPlanner, Problem, UserType, get_environment,
+    BoolType,
+    Fluent,
+    InstantaneousAction,
+    Object,
+    OneshotPlanner,
+    Problem,
+    UserType,
+    get_environment,
 )
 
 get_environment().credits_stream = None

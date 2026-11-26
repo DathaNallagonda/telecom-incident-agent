@@ -1,4 +1,5 @@
 """Day 0 smoke test: call the Gemini backup once and print the reply."""
+
 import os
 
 from dotenv import load_dotenv

@@ -1,4 +1,5 @@
 """Day 0 smoke test: call Groq once and print the reply."""
+
 import os
 
 from dotenv import load_dotenv

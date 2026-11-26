@@ -1,0 +1,57 @@
+(define (domain incident-domain)
+ (:requirements :strips :typing)
+ (:types node sector)
+ (:predicates 
+             (alarm ?p0 - node)
+             (diagnosed ?p0 - node)
+             (node_up ?p0 - node)
+             (power_ok ?p0 - node)
+             (power_lost ?p0 - node)
+             (hw_ok ?p0 - node)
+             (hw_fault ?p0 - node)
+             (backhaul_ok ?p0 - node)
+             (link_cut ?p0 - node)
+             (technician_at ?p0 - node)
+             (serves ?p0 - node ?p1 - sector)
+             (can_backup ?p0 - node ?p1 - sector)
+             (affected ?p0_0 - sector)
+             (sector_served ?p0_0 - sector)
+             (customers_notified ?p0_0 - sector)
+ )
+ (:action diagnose
+  :parameters ( ?n - node)
+  :precondition (and (alarm ?n))
+  :effect (and (diagnosed ?n)))
+ (:action dispatch_technician
+  :parameters ( ?n - node)
+  :precondition (and (diagnosed ?n))
+  :effect (and (technician_at ?n)))
+ (:action restore_power
+  :parameters ( ?n - node)
+  :precondition (and (technician_at ?n) (power_lost ?n))
+  :effect (and (power_ok ?n) (not (power_lost ?n))))
+ (:action repair_hardware
+  :parameters ( ?n - node)
+  :precondition (and (technician_at ?n) (hw_fault ?n))
+  :effect (and (hw_ok ?n) (not (hw_fault ?n))))
+ (:action repair_link
+  :parameters ( ?n - node)
+  :precondition (and (technician_at ?n) (link_cut ?n))
+  :effect (and (backhaul_ok ?n) (not (link_cut ?n)) (not (alarm ?n))))
+ (:action restart_node
+  :parameters ( ?n - node)
+  :precondition (and (diagnosed ?n) (power_ok ?n) (hw_ok ?n))
+  :effect (and (node_up ?n) (not (alarm ?n))))
+ (:action restore_service
+  :parameters ( ?s - sector ?n - node)
+  :precondition (and (serves ?n ?s) (node_up ?n) (backhaul_ok ?n))
+  :effect (and (sector_served ?s)))
+ (:action reroute_traffic
+  :parameters ( ?s - sector ?to - node)
+  :precondition (and (affected ?s) (can_backup ?to ?s) (node_up ?to) (backhaul_ok ?to))
+  :effect (and (sector_served ?s)))
+ (:action notify_customers
+  :parameters ( ?s - sector)
+  :precondition (and (affected ?s))
+  :effect (and (customers_notified ?s)))
+)

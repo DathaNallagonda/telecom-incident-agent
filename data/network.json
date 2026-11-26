@@ -1,0 +1,177 @@
+{
+  "nodes": [
+    {
+      "id": "C0",
+      "type": "router",
+      "up": true,
+      "power_ok": true,
+      "hardware_fault": false,
+      "alarm": false,
+      "diagnosed": false,
+      "technician_at": false
+    },
+    {
+      "id": "T1",
+      "type": "tower",
+      "up": true,
+      "power_ok": true,
+      "hardware_fault": false,
+      "alarm": false,
+      "diagnosed": false,
+      "technician_at": false
+    },
+    {
+      "id": "T2",
+      "type": "tower",
+      "up": true,
+      "power_ok": true,
+      "hardware_fault": false,
+      "alarm": false,
+      "diagnosed": false,
+      "technician_at": false
+    },
+    {
+      "id": "T3",
+      "type": "tower",
+      "up": true,
+      "power_ok": true,
+      "hardware_fault": false,
+      "alarm": false,
+      "diagnosed": false,
+      "technician_at": false
+    },
+    {
+      "id": "T4",
+      "type": "tower",
+      "up": true,
+      "power_ok": true,
+      "hardware_fault": false,
+      "alarm": false,
+      "diagnosed": false,
+      "technician_at": false
+    },
+    {
+      "id": "T5",
+      "type": "tower",
+      "up": true,
+      "power_ok": true,
+      "hardware_fault": false,
+      "alarm": false,
+      "diagnosed": false,
+      "technician_at": false
+    },
+    {
+      "id": "T6",
+      "type": "tower",
+      "up": true,
+      "power_ok": true,
+      "hardware_fault": false,
+      "alarm": false,
+      "diagnosed": false,
+      "technician_at": false
+    }
+  ],
+  "links": [
+    {
+      "a": "C0",
+      "b": "T1",
+      "up": true
+    },
+    {
+      "a": "C0",
+      "b": "T2",
+      "up": true
+    },
+    {
+      "a": "C0",
+      "b": "T3",
+      "up": true
+    },
+    {
+      "a": "C0",
+      "b": "T4",
+      "up": true
+    },
+    {
+      "a": "C0",
+      "b": "T5",
+      "up": true
+    },
+    {
+      "a": "C0",
+      "b": "T6",
+      "up": true
+    },
+    {
+      "a": "T1",
+      "b": "T2",
+      "up": true
+    },
+    {
+      "a": "T4",
+      "b": "T5",
+      "up": true
+    }
+  ],
+  "sectors": [
+    {
+      "id": "S1",
+      "served_by": "T1",
+      "backup_towers": [
+        "T2"
+      ],
+      "served": true,
+      "notified": false,
+      "affected": false
+    },
+    {
+      "id": "S2",
+      "served_by": "T2",
+      "backup_towers": [
+        "T1"
+      ],
+      "served": true,
+      "notified": false,
+      "affected": false
+    },
+    {
+      "id": "S3",
+      "served_by": "T3",
+      "backup_towers": [],
+      "served": true,
+      "notified": false,
+      "affected": false
+    },
+    {
+      "id": "S4",
+      "served_by": "T4",
+      "backup_towers": [
+        "T5"
+      ],
+      "served": true,
+      "notified": false,
+      "affected": false
+    },
+    {
+      "id": "S5",
+      "served_by": "T5",
+      "backup_towers": [
+        "T4",
+        "T6"
+      ],
+      "served": true,
+      "notified": false,
+      "affected": false
+    },
+    {
+      "id": "S6",
+      "served_by": "T6",
+      "backup_towers": [
+        "T5"
+      ],
+      "served": true,
+      "notified": false,
+      "affected": false
+    }
+  ]
+}
