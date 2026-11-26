@@ -1,20 +1,8 @@
----
-title: Telecom Incident Agent
-emoji: 📡
-colorFrom: blue
-colorTo: green
-sdk: docker
-app_port: 8501
-pinned: false
-license: mit
-short_description: LLM agents fix telecom incidents; a planner verifies plans
----
-
 # Telecom Incident Agent
 
 A multi-agent system for telecom incidents: LLM agents diagnose, act and communicate, and a symbolic verifier checks every plan before it touches the network (LLM-Modulo).
 
-> Work in progress — built Nov 26–30, 2026.
+> Work in progress — built Nov 26–30, 2026. Live demo on Streamlit Community Cloud (link coming).
 
 ## Run locally
 
@@ -27,3 +15,5 @@ streamlit run app.py
 ```
 
 Run the tests with `pytest`.
+
+A `Dockerfile` is included for running the app in a container (`docker build -t telecom-agent . && docker run -p 8501:8501 --env-file .env telecom-agent`).

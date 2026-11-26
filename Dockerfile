@@ -8,7 +8,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Hugging Face Spaces run containers as user 1000
+# Run as a non-root user
 RUN useradd -m -u 1000 user && chown -R user /app
 USER user
 
