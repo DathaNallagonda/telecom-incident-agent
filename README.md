@@ -2,7 +2,7 @@
 
 A multi-agent system for telecom incidents: LLM agents diagnose, act and communicate, and a symbolic verifier checks every plan before it touches the network (LLM-Modulo).
 
-> Work in progress — built Nov 26–30, 2026. Live demo on Streamlit Community Cloud (link coming).
+> Work in progress — built Nov 26–30, 2026. **Live demo:** https://telecom-incident-agent.streamlit.app/
 
 ## Run locally
 
