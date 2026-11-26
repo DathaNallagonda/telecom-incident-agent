@@ -64,3 +64,30 @@ def build_problem(
     for g in goal_list:
         problem.add_goal(expr(g))
     return problem
+
+
+def belief_state(
+    state: NetworkState, faults: dict[str, str], affected_sectors: list[str]
+) -> NetworkState:
+    """The network as triage believes it is: the planning problem is built from this.
+
+    Observable facts (alarms, up/down, links) come from the live state. Hidden
+    facts (what kind of fault each node has, which sectors are affected) come
+    from triage, so a triage mistake shows up as a plan that fails on the real
+    network, which is exactly what the evaluation should measure.
+
+    faults: node id -> "power" | "hardware" | "link" | "unknown"
+    """
+    belief = state.copy()
+    for node_id, kind in faults.items():
+        if node_id not in belief.nodes:
+            raise UnknownIdError(f"unknown node id {node_id!r}")
+        n = belief.nodes[node_id]
+        n.power_ok = kind != "power"
+        n.hardware_fault = kind == "hardware"
+    for s in belief.sectors.values():
+        s.affected = s.id in affected_sectors
+    unknown = [s for s in affected_sectors if s not in belief.sectors]
+    if unknown:
+        raise UnknownIdError(f"unknown sector ids {unknown}")
+    return belief
