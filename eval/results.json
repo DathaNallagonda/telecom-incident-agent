@@ -94,19 +94,19 @@
    }
   },
   "link": {
-   "runs": 2,
-   "scenarios": 2,
+   "runs": 5,
+   "scenarios": 5,
    "valid_plan_rate": {
-    "baseline": 100.0,
+    "baseline": 80.0,
     "system": 100.0
    },
    "goal_reached_rate": {
-    "baseline": 100.0,
+    "baseline": 80.0,
     "system": 100.0
    },
    "goal_reached_without_injected_failure": {
-    "runs": 2,
-    "baseline": 100.0,
+    "runs": 5,
+    "baseline": 80.0,
     "system": 100.0
    },
    "goal_reached_with_injected_failure": {
@@ -115,45 +115,45 @@
     "system": 0.0
    },
    "unsafe_or_invalid_attempted": {
-    "baseline": 0,
+    "baseline": 2,
     "system": 0
    },
    "runs_with_unsafe_or_invalid": {
-    "baseline": 0.0,
+    "baseline": 20.0,
     "system": 0.0
    },
    "plan_len_over_optimal": {
-    "baseline": 1.75,
-    "system": 1.75
+    "baseline": 1.6,
+    "system": 1.6
    },
    "triage_exact_rate": 100.0,
    "triage_fault_acc": 1.0,
    "triage_sector_acc": 1.0,
-   "avg_llm_rounds": 1,
+   "avg_llm_rounds": 1.2,
    "fallback_rate": 0.0,
-   "llm_fixed_after_feedback": 0.0,
+   "llm_fixed_after_feedback": 20.0,
    "replan_recovery_rate": null,
    "replan_runs": 0,
    "latency_s": {
     "baseline": null,
-    "system": 16.59
+    "system": 19.67
    }
   },
   "all": {
-   "runs": 12,
-   "scenarios": 12,
+   "runs": 15,
+   "scenarios": 15,
    "valid_plan_rate": {
-    "baseline": 83.33333333333333,
-    "system": 91.66666666666667
+    "baseline": 80.0,
+    "system": 93.33333333333333
    },
    "goal_reached_rate": {
-    "baseline": 75.0,
-    "system": 91.66666666666667
+    "baseline": 73.33333333333333,
+    "system": 93.33333333333333
    },
    "goal_reached_without_injected_failure": {
-    "runs": 10,
-    "baseline": 90.0,
-    "system": 90.0
+    "runs": 13,
+    "baseline": 84.61538461538461,
+    "system": 92.3076923076923
    },
    "goal_reached_with_injected_failure": {
     "runs": 2,
@@ -161,28 +161,28 @@
     "system": 100.0
    },
    "unsafe_or_invalid_attempted": {
-    "baseline": 1,
+    "baseline": 3,
     "system": 0
    },
    "runs_with_unsafe_or_invalid": {
-    "baseline": 8.333333333333334,
+    "baseline": 13.333333333333334,
     "system": 0.0
    },
    "plan_len_over_optimal": {
-    "baseline": 1.15,
-    "system": 1.14
+    "baseline": 1.23,
+    "system": 1.21
    },
-   "triage_exact_rate": 91.66666666666667,
-   "triage_fault_acc": 0.92,
-   "triage_sector_acc": 0.92,
-   "avg_llm_rounds": 1.09,
+   "triage_exact_rate": 93.33333333333333,
+   "triage_fault_acc": 0.93,
+   "triage_sector_acc": 0.93,
+   "avg_llm_rounds": 1.14,
    "fallback_rate": 0.0,
-   "llm_fixed_after_feedback": 8.333333333333334,
+   "llm_fixed_after_feedback": 13.333333333333334,
    "replan_recovery_rate": 100.0,
    "replan_runs": 2,
    "latency_s": {
     "baseline": null,
-    "system": 18.03
+    "system": 18.82
    }
   }
  },
@@ -281,19 +281,19 @@
     }
    },
    "link": {
-    "runs": 2,
-    "scenarios": 2,
+    "runs": 5,
+    "scenarios": 5,
     "valid_plan_rate": {
-     "baseline": 100.0,
+     "baseline": 80.0,
      "system": 100.0
     },
     "goal_reached_rate": {
-     "baseline": 100.0,
+     "baseline": 80.0,
      "system": 100.0
     },
     "goal_reached_without_injected_failure": {
-     "runs": 2,
-     "baseline": 100.0,
+     "runs": 5,
+     "baseline": 80.0,
      "system": 100.0
     },
     "goal_reached_with_injected_failure": {
@@ -302,45 +302,45 @@
      "system": 0.0
     },
     "unsafe_or_invalid_attempted": {
-     "baseline": 0,
+     "baseline": 2,
      "system": 0
     },
     "runs_with_unsafe_or_invalid": {
-     "baseline": 0.0,
+     "baseline": 20.0,
      "system": 0.0
     },
     "plan_len_over_optimal": {
-     "baseline": 1.75,
-     "system": 1.75
+     "baseline": 1.6,
+     "system": 1.6
     },
     "triage_exact_rate": 100.0,
     "triage_fault_acc": 1.0,
     "triage_sector_acc": 1.0,
-    "avg_llm_rounds": 1,
+    "avg_llm_rounds": 1.2,
     "fallback_rate": 0.0,
-    "llm_fixed_after_feedback": 0.0,
+    "llm_fixed_after_feedback": 20.0,
     "replan_recovery_rate": null,
     "replan_runs": 0,
     "latency_s": {
      "baseline": null,
-     "system": 16.59
+     "system": 19.67
     }
    },
    "all": {
-    "runs": 12,
-    "scenarios": 12,
+    "runs": 15,
+    "scenarios": 15,
     "valid_plan_rate": {
-     "baseline": 83.33333333333333,
-     "system": 91.66666666666667
+     "baseline": 80.0,
+     "system": 93.33333333333333
     },
     "goal_reached_rate": {
-     "baseline": 75.0,
-     "system": 91.66666666666667
+     "baseline": 73.33333333333333,
+     "system": 93.33333333333333
     },
     "goal_reached_without_injected_failure": {
-     "runs": 10,
-     "baseline": 90.0,
-     "system": 90.0
+     "runs": 13,
+     "baseline": 84.61538461538461,
+     "system": 92.3076923076923
     },
     "goal_reached_with_injected_failure": {
      "runs": 2,
@@ -348,28 +348,28 @@
      "system": 100.0
     },
     "unsafe_or_invalid_attempted": {
-     "baseline": 1,
+     "baseline": 3,
      "system": 0
     },
     "runs_with_unsafe_or_invalid": {
-     "baseline": 8.333333333333334,
+     "baseline": 13.333333333333334,
      "system": 0.0
     },
     "plan_len_over_optimal": {
-     "baseline": 1.15,
-     "system": 1.14
+     "baseline": 1.23,
+     "system": 1.21
     },
-    "triage_exact_rate": 91.66666666666667,
-    "triage_fault_acc": 0.92,
-    "triage_sector_acc": 0.92,
-    "avg_llm_rounds": 1.09,
+    "triage_exact_rate": 93.33333333333333,
+    "triage_fault_acc": 0.93,
+    "triage_sector_acc": 0.93,
+    "avg_llm_rounds": 1.14,
     "fallback_rate": 0.0,
-    "llm_fixed_after_feedback": 8.333333333333334,
+    "llm_fixed_after_feedback": 13.333333333333334,
     "replan_recovery_rate": 100.0,
     "replan_runs": 2,
     "latency_s": {
      "baseline": null,
-     "system": 18.03
+     "system": 18.82
     }
    }
   }
@@ -1096,6 +1096,190 @@
      "repair_link(T4)",
      "restore_service(S4, T4)",
      "notify_customers(S4)"
+    ],
+    "invalid_reason": null,
+    "latency_s": null,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 5
+   }
+  },
+  {
+   "version": 2,
+   "scenario": "L3",
+   "type": "link",
+   "run": 1,
+   "model": "openai/gpt-oss-20b",
+   "ts": "2026-11-27T13:41:32",
+   "optimal_len": 2,
+   "planned_sectors": [
+    "S6"
+   ],
+   "triage": {
+    "ok": true,
+    "exact": true,
+    "fault_acc": 1.0,
+    "sector_acc": 1.0,
+    "error": null,
+    "latency_s": 10.09
+   },
+   "system": {
+    "source": "llm_verified",
+    "valid": true,
+    "rounds": 2,
+    "plan_len": 5,
+    "steps": [
+     "diagnose(T6)",
+     "dispatch_technician(T6)",
+     "repair_link(T6)",
+     "restore_service(S6, T6)",
+     "notify_customers(S6)"
+    ],
+    "round_reasons": [
+     "step 3: 'T6-C0' is not a known node (parameter n)"
+    ],
+    "latency_s": 37.2,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 5
+   },
+   "baseline": {
+    "valid": false,
+    "plan_len": 5,
+    "steps": [
+     "diagnose(T6)",
+     "dispatch_technician(T6)",
+     "repair_link(T6-C0)",
+     "restore_service(S6, T6)",
+     "notify_customers(S6)"
+    ],
+    "invalid_reason": "step 3: 'T6-C0' is not a known node (parameter n)",
+    "latency_s": null,
+    "status": "failed",
+    "goal_reached": false,
+    "goals_unmet": [
+     "sector_served(S6)"
+    ],
+    "attempted_invalid": 2,
+    "blocked_caught": 2,
+    "replans": 0,
+    "steps_executed": 5
+   }
+  },
+  {
+   "version": 2,
+   "scenario": "L4",
+   "type": "link",
+   "run": 1,
+   "model": "openai/gpt-oss-20b",
+   "ts": "2026-11-27T13:42:26",
+   "optimal_len": 2,
+   "planned_sectors": [
+    "S1"
+   ],
+   "triage": {
+    "ok": true,
+    "exact": true,
+    "fault_acc": 1.0,
+    "sector_acc": 1.0,
+    "error": null,
+    "latency_s": 7.56
+   },
+   "system": {
+    "source": "llm_verified",
+    "valid": true,
+    "rounds": 1,
+    "plan_len": 2,
+    "steps": [
+     "reroute_traffic(S1, T2)",
+     "notify_customers(S1)"
+    ],
+    "round_reasons": [],
+    "latency_s": 17.71,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 2
+   },
+   "baseline": {
+    "valid": true,
+    "plan_len": 2,
+    "steps": [
+     "reroute_traffic(S1, T2)",
+     "notify_customers(S1)"
+    ],
+    "invalid_reason": null,
+    "latency_s": null,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 2
+   }
+  },
+  {
+   "version": 2,
+   "scenario": "L5",
+   "type": "link",
+   "run": 1,
+   "model": "openai/gpt-oss-20b",
+   "ts": "2026-11-27T13:43:02",
+   "optimal_len": 5,
+   "planned_sectors": [
+    "S3"
+   ],
+   "triage": {
+    "ok": true,
+    "exact": true,
+    "fault_acc": 1.0,
+    "sector_acc": 1.0,
+    "error": null,
+    "latency_s": 5.23
+   },
+   "system": {
+    "source": "llm_verified",
+    "valid": true,
+    "rounds": 1,
+    "plan_len": 5,
+    "steps": [
+     "diagnose(T3)",
+     "dispatch_technician(T3)",
+     "repair_link(T3)",
+     "restore_service(S3, T3)",
+     "notify_customers(S3)"
+    ],
+    "round_reasons": [],
+    "latency_s": 10.27,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 5
+   },
+   "baseline": {
+    "valid": true,
+    "plan_len": 5,
+    "steps": [
+     "diagnose(T3)",
+     "dispatch_technician(T3)",
+     "repair_link(T3)",
+     "restore_service(S3, T3)",
+     "notify_customers(S3)"
     ],
     "invalid_reason": null,
     "latency_s": null,

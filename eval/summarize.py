@@ -231,7 +231,8 @@ def write_markdown(summary: dict, rows: list[dict]) -> str:
         f"{a['runs_with_unsafe_or_invalid']['system']:.0f}% |",
         f"| Plan length / optimal | {a['plan_len_over_optimal']['baseline']} | "
         f"{a['plan_len_over_optimal']['system']} |",
-        f"| Latency per incident (s) | {a['latency_s']['baseline']} | {a['latency_s']['system']} |",
+        f"| Latency per incident (s) | {a['latency_s']['baseline'] or '— (shares the first call)'}"
+        f" | {a['latency_s']['system']} |",
         "",
         "| System-only metric | Value |",
         "| --- | --- |",

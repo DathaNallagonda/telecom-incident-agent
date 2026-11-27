@@ -27,6 +27,11 @@ SCENARIOS = json.loads((ROOT / "eval" / "scenarios.json").read_text(encoding="ut
 SUMMARY_MD = ROOT / "eval" / "summary.md"
 
 st.set_page_config(page_title="Telecom Incident Agent", page_icon="📡", layout="wide")
+# Wide Markdown tables scroll inside their own box instead of widening the page (phones).
+st.markdown(
+    "<style>.stMarkdown table{display:block;overflow-x:auto;max-width:100%;}</style>",
+    unsafe_allow_html=True,
+)
 
 # --- colours (validated default palette, light surface) -----------------------
 OK, FAULT, REROUTE, MUTED, TEXT = "#2a78d6", "#e34948", "#1baf7a", "#a8a7a0", "#0b0b0b"

@@ -27,17 +27,17 @@ The LLM never writes PDDL. It fills JSON schemas; code builds the formal problem
 20 scenarios (power loss, hardware fault, link cut, multi-fault cascades; 3 with noisy customer text, 4 with a restart failure injected mid-run), 3 runs each. The **baseline** is the same LLM's first plan with no verifier and no replanning; both arms are scored on the true network after execution.
 
 <!-- results:start -->
-Model `openai/gpt-oss-20b`, 12 runs over 12 scenarios.
+Model `openai/gpt-oss-20b`, 15 runs over 15 scenarios.
 
 | Metric | LLM-only baseline | Verified system |
 | --- | --- | --- |
-| Valid plans | 83% | 92% |
-| Unsafe or invalid actions attempted | 1 | 0 |
-| Incident resolved, no injected failure (10 runs) | 90% | 90% |
+| Valid plans | 80% | 93% |
+| Unsafe or invalid actions attempted | 3 | 0 |
+| Incident resolved, no injected failure (13 runs) | 85% | 92% |
 | Incident resolved, restart fails mid-run (2 runs) | 0% | 100% |
-| Plan length / optimal | 1.15 | 1.14 |
+| Plan length / optimal | 1.23 | 1.21 |
 
-Triage exact match 92%; LLM plans fixed after verifier feedback 8%; pyperplan fallback 0%.
+Triage exact match 93%; LLM plans fixed after verifier feedback 13%; pyperplan fallback 0%.
 
 ![Goal reached](docs/goal_reached_rate.png)
 
