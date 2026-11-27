@@ -1,0 +1,659 @@
+[
+  {
+    "id": "P1",
+    "type": "power",
+    "incident_text": "customers near the mall say no signal since 9am, my phone just shows SOS",
+    "noisy_text": true,
+    "failures": [
+      {
+        "kind": "power",
+        "node": "T3"
+      }
+    ],
+    "goal_mode": "full_repair",
+    "inject_failure_during_execution": true,
+    "expected_triage": {
+      "faults": {
+        "T3": "power"
+      },
+      "affected_sectors": [
+        "S3"
+      ]
+    },
+    "optimal_plan_length": 6,
+    "optimal_plan": [
+      "diagnose(T3)",
+      "dispatch_technician(T3)",
+      "restore_power(T3)",
+      "restart_node(T3)",
+      "restore_service(S3, T3)",
+      "notify_customers(S3)"
+    ]
+  },
+  {
+    "id": "P2",
+    "type": "power",
+    "incident_text": "Mains failure alarm at tower T1, site on battery then dropped. Restore the site.",
+    "noisy_text": false,
+    "failures": [
+      {
+        "kind": "power",
+        "node": "T1"
+      }
+    ],
+    "goal_mode": "full_repair",
+    "inject_failure_during_execution": false,
+    "expected_triage": {
+      "faults": {
+        "T1": "power"
+      },
+      "affected_sectors": [
+        "S1"
+      ]
+    },
+    "optimal_plan_length": 6,
+    "optimal_plan": [
+      "diagnose(T1)",
+      "dispatch_technician(T1)",
+      "restore_power(T1)",
+      "restart_node(T1)",
+      "restore_service(S1, T1)",
+      "notify_customers(S1)"
+    ]
+  },
+  {
+    "id": "P3",
+    "type": "power",
+    "incident_text": "T4 went dark after a storm; NOC sees no power telemetry. Bring the tower back.",
+    "noisy_text": false,
+    "failures": [
+      {
+        "kind": "power",
+        "node": "T4"
+      }
+    ],
+    "goal_mode": "full_repair",
+    "inject_failure_during_execution": false,
+    "expected_triage": {
+      "faults": {
+        "T4": "power"
+      },
+      "affected_sectors": [
+        "S4"
+      ]
+    },
+    "optimal_plan_length": 6,
+    "optimal_plan": [
+      "diagnose(T4)",
+      "dispatch_technician(T4)",
+      "restore_power(T4)",
+      "restart_node(T4)",
+      "restore_service(S4, T4)",
+      "notify_customers(S4)"
+    ]
+  },
+  {
+    "id": "P4",
+    "type": "power",
+    "incident_text": "Airport Road tower reports power loss alarm. Full restoration of the site required.",
+    "noisy_text": false,
+    "failures": [
+      {
+        "kind": "power",
+        "node": "T6"
+      }
+    ],
+    "goal_mode": "full_repair",
+    "inject_failure_during_execution": false,
+    "expected_triage": {
+      "faults": {
+        "T6": "power"
+      },
+      "affected_sectors": [
+        "S6"
+      ]
+    },
+    "optimal_plan_length": 6,
+    "optimal_plan": [
+      "diagnose(T6)",
+      "dispatch_technician(T6)",
+      "restore_power(T6)",
+      "restart_node(T6)",
+      "restore_service(S6, T6)",
+      "notify_customers(S6)"
+    ]
+  },
+  {
+    "id": "P5",
+    "type": "power",
+    "incident_text": "Rectifier alarm then total outage at T5. Please restore power and the tower.",
+    "noisy_text": false,
+    "failures": [
+      {
+        "kind": "power",
+        "node": "T5"
+      }
+    ],
+    "goal_mode": "full_repair",
+    "inject_failure_during_execution": false,
+    "expected_triage": {
+      "faults": {
+        "T5": "power"
+      },
+      "affected_sectors": [
+        "S5"
+      ]
+    },
+    "optimal_plan_length": 6,
+    "optimal_plan": [
+      "diagnose(T5)",
+      "dispatch_technician(T5)",
+      "restore_power(T5)",
+      "restart_node(T5)",
+      "restore_service(S5, T5)",
+      "notify_customers(S5)"
+    ]
+  },
+  {
+    "id": "H1",
+    "type": "hardware",
+    "incident_text": "Tower 3 alarm keeps flashing, remote reset didn't help, looks like a board failure",
+    "noisy_text": false,
+    "failures": [
+      {
+        "kind": "hardware",
+        "node": "T3"
+      }
+    ],
+    "goal_mode": "full_repair",
+    "inject_failure_during_execution": false,
+    "expected_triage": {
+      "faults": {
+        "T3": "hardware"
+      },
+      "affected_sectors": [
+        "S3"
+      ]
+    },
+    "optimal_plan_length": 6,
+    "optimal_plan": [
+      "diagnose(T3)",
+      "dispatch_technician(T3)",
+      "repair_hardware(T3)",
+      "restart_node(T3)",
+      "restore_service(S3, T3)",
+      "notify_customers(S3)"
+    ]
+  },
+  {
+    "id": "H2",
+    "type": "hardware",
+    "incident_text": "Baseband unit fault reported on T2; the radio is down. Repair the site.",
+    "noisy_text": false,
+    "failures": [
+      {
+        "kind": "hardware",
+        "node": "T2"
+      }
+    ],
+    "goal_mode": "full_repair",
+    "inject_failure_during_execution": false,
+    "expected_triage": {
+      "faults": {
+        "T2": "hardware"
+      },
+      "affected_sectors": [
+        "S2"
+      ]
+    },
+    "optimal_plan_length": 6,
+    "optimal_plan": [
+      "diagnose(T2)",
+      "dispatch_technician(T2)",
+      "repair_hardware(T2)",
+      "restart_node(T2)",
+      "restore_service(S2, T2)",
+      "notify_customers(S2)"
+    ]
+  },
+  {
+    "id": "H3",
+    "type": "hardware",
+    "incident_text": "T5 hardware alarm: radio module failure. Tower is down, needs a fix.",
+    "noisy_text": false,
+    "failures": [
+      {
+        "kind": "hardware",
+        "node": "T5"
+      }
+    ],
+    "goal_mode": "full_repair",
+    "inject_failure_during_execution": true,
+    "expected_triage": {
+      "faults": {
+        "T5": "hardware"
+      },
+      "affected_sectors": [
+        "S5"
+      ]
+    },
+    "optimal_plan_length": 6,
+    "optimal_plan": [
+      "diagnose(T5)",
+      "dispatch_technician(T5)",
+      "repair_hardware(T5)",
+      "restart_node(T5)",
+      "restore_service(S5, T5)",
+      "notify_customers(S5)"
+    ]
+  },
+  {
+    "id": "H4",
+    "type": "hardware",
+    "incident_text": "Equipment failure at the Airport Road tower T6, unit not responding.",
+    "noisy_text": false,
+    "failures": [
+      {
+        "kind": "hardware",
+        "node": "T6"
+      }
+    ],
+    "goal_mode": "full_repair",
+    "inject_failure_during_execution": false,
+    "expected_triage": {
+      "faults": {
+        "T6": "hardware"
+      },
+      "affected_sectors": [
+        "S6"
+      ]
+    },
+    "optimal_plan_length": 6,
+    "optimal_plan": [
+      "diagnose(T6)",
+      "dispatch_technician(T6)",
+      "repair_hardware(T6)",
+      "restart_node(T6)",
+      "restore_service(S6, T6)",
+      "notify_customers(S6)"
+    ]
+  },
+  {
+    "id": "H5",
+    "type": "hardware",
+    "incident_text": "T1 shows a hardware fault after a power surge; the tower is offline.",
+    "noisy_text": false,
+    "failures": [
+      {
+        "kind": "hardware",
+        "node": "T1"
+      }
+    ],
+    "goal_mode": "full_repair",
+    "inject_failure_during_execution": false,
+    "expected_triage": {
+      "faults": {
+        "T1": "hardware"
+      },
+      "affected_sectors": [
+        "S1"
+      ]
+    },
+    "optimal_plan_length": 6,
+    "optimal_plan": [
+      "diagnose(T1)",
+      "dispatch_technician(T1)",
+      "repair_hardware(T1)",
+      "restart_node(T1)",
+      "restore_service(S1, T1)",
+      "notify_customers(S1)"
+    ]
+  },
+  {
+    "id": "L1",
+    "type": "link",
+    "incident_text": "phones at the railway station show full bars but nothing loads, data totally dead",
+    "noisy_text": true,
+    "failures": [
+      {
+        "kind": "link",
+        "node": "T2"
+      }
+    ],
+    "goal_mode": "default",
+    "inject_failure_during_execution": false,
+    "expected_triage": {
+      "faults": {
+        "T2": "link"
+      },
+      "affected_sectors": [
+        "S2"
+      ]
+    },
+    "optimal_plan_length": 2,
+    "optimal_plan": [
+      "reroute_traffic(S2, T1)",
+      "notify_customers(S2)"
+    ]
+  },
+  {
+    "id": "L2",
+    "type": "link",
+    "incident_text": "Fibre cut reported on the T4 backhaul. Restore service to its customers.",
+    "noisy_text": false,
+    "failures": [
+      {
+        "kind": "link",
+        "node": "T4"
+      }
+    ],
+    "goal_mode": "default",
+    "inject_failure_during_execution": false,
+    "expected_triage": {
+      "faults": {
+        "T4": "link"
+      },
+      "affected_sectors": [
+        "S4"
+      ]
+    },
+    "optimal_plan_length": 2,
+    "optimal_plan": [
+      "reroute_traffic(S4, T5)",
+      "notify_customers(S4)"
+    ]
+  },
+  {
+    "id": "L3",
+    "type": "link",
+    "incident_text": "Backhaul down at T6 after roadworks. Keep customers in service.",
+    "noisy_text": false,
+    "failures": [
+      {
+        "kind": "link",
+        "node": "T6"
+      }
+    ],
+    "goal_mode": "default",
+    "inject_failure_during_execution": false,
+    "expected_triage": {
+      "faults": {
+        "T6": "link"
+      },
+      "affected_sectors": [
+        "S6"
+      ]
+    },
+    "optimal_plan_length": 2,
+    "optimal_plan": [
+      "reroute_traffic(S6, T5)",
+      "notify_customers(S6)"
+    ]
+  },
+  {
+    "id": "L4",
+    "type": "link",
+    "incident_text": "Microwave backhaul failure on T1; the site is up but isolated from the core.",
+    "noisy_text": false,
+    "failures": [
+      {
+        "kind": "link",
+        "node": "T1"
+      }
+    ],
+    "goal_mode": "default",
+    "inject_failure_during_execution": false,
+    "expected_triage": {
+      "faults": {
+        "T1": "link"
+      },
+      "affected_sectors": [
+        "S1"
+      ]
+    },
+    "optimal_plan_length": 2,
+    "optimal_plan": [
+      "reroute_traffic(S1, T2)",
+      "notify_customers(S1)"
+    ]
+  },
+  {
+    "id": "L5",
+    "type": "link",
+    "incident_text": "T3 lost its uplink to the core. Sector customers have no data.",
+    "noisy_text": false,
+    "failures": [
+      {
+        "kind": "link",
+        "node": "T3"
+      }
+    ],
+    "goal_mode": "default",
+    "inject_failure_during_execution": false,
+    "expected_triage": {
+      "faults": {
+        "T3": "link"
+      },
+      "affected_sectors": [
+        "S3"
+      ]
+    },
+    "optimal_plan_length": 5,
+    "optimal_plan": [
+      "diagnose(T3)",
+      "dispatch_technician(T3)",
+      "repair_link(T3)",
+      "restore_service(S3, T3)",
+      "notify_customers(S3)"
+    ]
+  },
+  {
+    "id": "M1",
+    "type": "multi",
+    "incident_text": "lots of complaints: no signal at the mall AND the station has bars but no internet",
+    "noisy_text": true,
+    "failures": [
+      {
+        "kind": "power",
+        "node": "T3"
+      },
+      {
+        "kind": "link",
+        "node": "T2"
+      }
+    ],
+    "goal_mode": "default",
+    "inject_failure_during_execution": false,
+    "expected_triage": {
+      "faults": {
+        "T3": "power",
+        "T2": "link"
+      },
+      "affected_sectors": [
+        "S2",
+        "S3"
+      ]
+    },
+    "optimal_plan_length": 8,
+    "optimal_plan": [
+      "diagnose(T3)",
+      "dispatch_technician(T3)",
+      "restore_power(T3)",
+      "restart_node(T3)",
+      "restore_service(S3, T3)",
+      "reroute_traffic(S2, T1)",
+      "notify_customers(S3)",
+      "notify_customers(S2)"
+    ]
+  },
+  {
+    "id": "M2",
+    "type": "multi",
+    "incident_text": "Two sites down: T4 hardware alarm and T5 power failure. Restore service everywhere.",
+    "noisy_text": false,
+    "failures": [
+      {
+        "kind": "hardware",
+        "node": "T4"
+      },
+      {
+        "kind": "power",
+        "node": "T5"
+      }
+    ],
+    "goal_mode": "default",
+    "inject_failure_during_execution": true,
+    "expected_triage": {
+      "faults": {
+        "T4": "hardware",
+        "T5": "power"
+      },
+      "affected_sectors": [
+        "S4",
+        "S5"
+      ]
+    },
+    "optimal_plan_length": 8,
+    "optimal_plan": [
+      "diagnose(T5)",
+      "dispatch_technician(T5)",
+      "restore_power(T5)",
+      "restart_node(T5)",
+      "restore_service(S5, T5)",
+      "reroute_traffic(S4, T5)",
+      "notify_customers(S5)",
+      "notify_customers(S4)"
+    ]
+  },
+  {
+    "id": "M3",
+    "type": "multi",
+    "incident_text": "T1 lost power and T2 has a board failure at the same time; both sectors are out.",
+    "noisy_text": false,
+    "failures": [
+      {
+        "kind": "power",
+        "node": "T1"
+      },
+      {
+        "kind": "hardware",
+        "node": "T2"
+      }
+    ],
+    "goal_mode": "default",
+    "inject_failure_during_execution": false,
+    "expected_triage": {
+      "faults": {
+        "T1": "power",
+        "T2": "hardware"
+      },
+      "affected_sectors": [
+        "S1",
+        "S2"
+      ]
+    },
+    "optimal_plan_length": 8,
+    "optimal_plan": [
+      "diagnose(T2)",
+      "dispatch_technician(T2)",
+      "repair_hardware(T2)",
+      "restart_node(T2)",
+      "restore_service(S2, T2)",
+      "reroute_traffic(S1, T2)",
+      "notify_customers(S2)",
+      "notify_customers(S1)"
+    ]
+  },
+  {
+    "id": "M4",
+    "type": "multi",
+    "incident_text": "T5 backhaul is cut and T6 lost power. Restore service in all affected sectors.",
+    "noisy_text": false,
+    "failures": [
+      {
+        "kind": "link",
+        "node": "T5"
+      },
+      {
+        "kind": "power",
+        "node": "T6"
+      }
+    ],
+    "goal_mode": "default",
+    "inject_failure_during_execution": false,
+    "expected_triage": {
+      "faults": {
+        "T5": "link",
+        "T6": "power"
+      },
+      "affected_sectors": [
+        "S5",
+        "S6"
+      ]
+    },
+    "optimal_plan_length": 7,
+    "optimal_plan": [
+      "diagnose(T5)",
+      "dispatch_technician(T5)",
+      "repair_link(T5)",
+      "restore_service(S5, T5)",
+      "reroute_traffic(S6, T5)",
+      "notify_customers(S6)",
+      "notify_customers(S5)"
+    ]
+  },
+  {
+    "id": "M5",
+    "type": "multi",
+    "incident_text": "Major incident: T1 uplink down, T4 power outage, T6 hardware failure. Full repair.",
+    "noisy_text": false,
+    "failures": [
+      {
+        "kind": "link",
+        "node": "T1"
+      },
+      {
+        "kind": "power",
+        "node": "T4"
+      },
+      {
+        "kind": "hardware",
+        "node": "T6"
+      }
+    ],
+    "goal_mode": "full_repair",
+    "inject_failure_during_execution": true,
+    "expected_triage": {
+      "faults": {
+        "T1": "link",
+        "T4": "power",
+        "T6": "hardware"
+      },
+      "affected_sectors": [
+        "S1",
+        "S4",
+        "S6"
+      ]
+    },
+    "optimal_plan_length": 17,
+    "optimal_plan": [
+      "diagnose(T6)",
+      "diagnose(T1)",
+      "diagnose(T4)",
+      "dispatch_technician(T6)",
+      "dispatch_technician(T1)",
+      "dispatch_technician(T4)",
+      "restore_power(T4)",
+      "repair_hardware(T6)",
+      "repair_link(T1)",
+      "restart_node(T6)",
+      "restart_node(T4)",
+      "restore_service(S6, T6)",
+      "restore_service(S1, T1)",
+      "restore_service(S4, T4)",
+      "notify_customers(S6)",
+      "notify_customers(S1)",
+      "notify_customers(S4)"
+    ]
+  }
+]

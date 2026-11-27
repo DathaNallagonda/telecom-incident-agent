@@ -29,6 +29,14 @@ from core.spec import RISKY, describe_actions
 MAX_FIX_ROUNDS = 3
 Source = Literal["llm_verified", "planner_fallback", "llm_only", "failed"]
 
+GOAL_TEXT = {
+    "default": "every affected sector has service (sector_served) and its customers are "
+    "notified (customers_notified).",
+    "full_repair": "every affected sector has service (sector_served) and its customers are "
+    "notified (customers_notified), AND every alarmed node is repaired: node_up and "
+    "backhaul_ok. Rerouting alone does not repair a node.",
+}
+
 SYSTEM_PROMPT = """You are the Planner Agent for a telecom network operations centre.
 Write a repair plan as JSON: a list of steps, each {{"action": name, "args": [ids]}}.
 
@@ -38,8 +46,7 @@ Actions (arguments in this order; every listed condition must hold before the st
 Rules:
 - Use only these actions and only ids from the network description.
 - A step's conditions must already be true from the start state or earlier steps.
-- Goal: every affected sector has service (sector_served) and its customers are
-  notified (customers_notified).
+- Goal: {goal}
 - Prefer the shortest plan. Risky actions ({risky}) will need human approval."""
 
 
@@ -62,8 +69,14 @@ def network_description(belief: NetworkState) -> str:
     return "\n".join(lines)
 
 
-def first_messages(triage: TriageResult, belief: NetworkState) -> list[BaseMessage]:
-    system = SYSTEM_PROMPT.format(actions=describe_actions(), risky=", ".join(sorted(RISKY)))
+def first_messages(
+    triage: TriageResult, belief: NetworkState, goals: str = "default"
+) -> list[BaseMessage]:
+    system = SYSTEM_PROMPT.format(
+        actions=describe_actions(),
+        risky=", ".join(sorted(RISKY)),
+        goal=GOAL_TEXT[goals] if goals in ("default", "full_repair") else GOAL_TEXT["default"],
+    )
     human = (
         f"Triage result:\n{triage.model_dump_json(indent=1)}\n\n"
         f"Current network state:\n{network_description(belief)}\n\n"
@@ -121,7 +134,7 @@ def plan_with_verification(
         proposer, log = None, [RoundLog(0, [], False, str(e))]
 
     if proposer is not None:
-        messages = first_messages(triage, belief)
+        messages = first_messages(triage, belief, goals)
         for rnd in range(1, max_fix_rounds + 2):  # first proposal + fix rounds
             try:
                 steps = _draft_steps(proposer.invoke(messages))
@@ -167,7 +180,7 @@ def baseline_plan(
     belief, problem = make_problem(state, triage, goals)
     proposer = proposer or llm_mod.structured(PlanDraft)
     try:
-        steps = _draft_steps(proposer.invoke(first_messages(triage, belief)))
+        steps = _draft_steps(proposer.invoke(first_messages(triage, belief, goals)))
     except Exception as e:
         reason = f"LLM output could not be used: {type(e).__name__}: {str(e)[:200]}"
         return PlanResult([], "llm_only", False, 1, [RoundLog(1, [], False, reason)], reason)

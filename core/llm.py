@@ -30,8 +30,21 @@ load_dotenv()
 
 ROOT = Path(__file__).resolve().parent.parent
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
+# Extra Gemini hop: 3.8 Flash often hits free-tier quota (429) or 503s.
+GEMINI_BACKUP_MODEL = os.getenv("GEMINI_BACKUP_MODEL", "gemini-3.6-flash")
 GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
 TIMEOUT_S = float(os.getenv("LLM_TIMEOUT_S", "20"))
+
+
+def _providers() -> list[str]:
+    """Model chain, e.g. LLM_PROVIDERS=groq pins the evaluation to one model."""
+    return [p.strip() for p in os.getenv("LLM_PROVIDERS", "gemini,groq").split(",") if p.strip()]
+
+
+def _max_retries() -> int:
+    return int(os.getenv("LLM_MAX_RETRIES", "1"))
+
+
 LOG_PATH = Path(os.getenv("LLM_LOG_PATH", ROOT / "logs" / "llm_calls.jsonl"))
 CACHE_DIR = Path(os.getenv("LLM_CACHE_DIR", ROOT / ".cache" / "llm"))
 
@@ -155,18 +168,18 @@ LOGGER = CallLogger()
 
 
 # --- models ------------------------------------------------------------------
-def _gemini() -> BaseChatModel | None:
+def _gemini(model: str = GEMINI_MODEL) -> BaseChatModel | None:
     key = _secret("GEMINI_API_KEY")
     if not key:
         return None
     from langchain_google_genai import ChatGoogleGenerativeAI
 
     return ChatGoogleGenerativeAI(
-        model=GEMINI_MODEL,
+        model=model,
         google_api_key=key,
         temperature=0,
         timeout=TIMEOUT_S,
-        max_retries=1,
+        max_retries=_max_retries(),
         callbacks=[LOGGER],
     )
 
@@ -182,14 +195,20 @@ def _groq() -> BaseChatModel | None:
         api_key=key,
         temperature=0,
         timeout=TIMEOUT_S,
-        max_retries=1,
+        max_retries=_max_retries(),
         callbacks=[LOGGER],
     )
 
 
 def chat_models() -> list[BaseChatModel]:
-    """Available models in priority order (Gemini, then Groq)."""
-    models = [m for m in (_gemini(), _groq()) if m is not None]
+    """Available models in priority order (default: Gemini 3.8, Gemini 3.6, Groq)."""
+    candidates: list[BaseChatModel | None] = []
+    for provider in _providers():
+        if provider == "gemini":
+            candidates += [_gemini(GEMINI_MODEL), _gemini(GEMINI_BACKUP_MODEL)]
+        elif provider == "groq":
+            candidates.append(_groq())
+    models = [m for m in candidates if m is not None]
     if not models:
         raise LLMUnavailableError(
             "No LLM API key found. Set GEMINI_API_KEY and/or GROQ_API_KEY in .env "

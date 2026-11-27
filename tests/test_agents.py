@@ -149,7 +149,9 @@ class FakeOutcome:
         self.result, self.error, self.transcript, self.model = result, error, [], "fake"
 
 
-def test_graph_runs_triage_plan_execute_communicate(monkeypatch):
+@pytest.fixture
+def fake_llms(monkeypatch):
+    """Triage, planner and comms without any LLM call."""
     monkeypatch.setattr(graph_mod, "run_triage", lambda text, net: FakeOutcome(triage_for()))
     real = graph_mod.plan_with_verification
     monkeypatch.setattr(
@@ -157,15 +159,117 @@ def test_graph_runs_triage_plan_execute_communicate(monkeypatch):
         "plan_with_verification",
         lambda t, n, g: real(t, n, g, proposer=scripted(draft(GOOD_A))),
     )
+    monkeypatch.setattr(
+        graph_mod, "write_comms", lambda facts: {"sms": [], "report": "# report", "source": "x"}
+    )
+
+
+def test_graph_runs_end_to_end_with_auto_approval(fake_llms):
     final, thread = graph_mod.run_incident("no signal", scenario_state("A"))
-    assert final["plan"]["source"] == "llm_verified"
-    assert final["execution_log"] == [] and final["report"] is None  # Day 3 stubs
-    assert final["errors"] == []
-    assert thread
+    assert final["first_plan"]["source"] == "llm_verified"
+    assert final["status"] == "completed" and final["errors"] == []
+    assert [e["result"] for e in final["execution_log"]] == ["ok"] * 6
+    restart = next(e for e in final["execution_log"] if e["action"] == "restart_node")
+    assert restart["approved_by"] == "auto"
+    assert final["report"] == "# report"
+
+
+def test_graph_pauses_for_approval_and_resumes(fake_llms):
+    graph = graph_mod.build_graph()
+    state, thread = graph_mod.run_incident(
+        "no signal", scenario_state("A"), graph=graph, auto_approve=False
+    )
+    pending = graph_mod.pending_interrupt(graph, thread)
+    assert pending["step"]["action"] == "restart_node" and pending["index"] == 4
+    assert len(state["execution_log"]) == 3  # paused before the risky step
+    final = graph_mod.resume(graph, thread, approved=True, by="alice")
+    assert final["status"] == "completed"
+    assert final["execution_log"][3]["approved_by"] == "alice"
+
+
+def test_graph_stops_when_operator_rejects(fake_llms):
+    graph = graph_mod.build_graph()
+    _, thread = graph_mod.run_incident(
+        "no signal", scenario_state("A"), graph=graph, auto_approve=False
+    )
+    final = graph_mod.resume(graph, thread, approved=False)
+    assert final["status"] == "rejected"
+    assert final["execution_log"][-1]["result"] == "rejected"
+    assert final["report"] == "# report"  # customers are still told
+
+
+def test_graph_replans_after_injected_restart_failure(fake_llms):
+    final, _ = graph_mod.run_incident("no signal", scenario_state("A"), inject_failure=True)
+    assert final["status"] == "completed"
+    assert len(final["replans"]) == 1 and "failed" in final["replans"][0]["reason"]
+    assert final["plan"]["source"] == "replan"
+    assert any(e["action"] == "repair_hardware" for e in final["execution_log"])
 
 
 def test_graph_ends_with_error_when_triage_fails(monkeypatch):
     monkeypatch.setattr(graph_mod, "run_triage", lambda t, n: FakeOutcome(None, "triage failed"))
     final, _ = graph_mod.run_incident("???", scenario_state("A"))
     assert final["errors"] == ["triage failed"]
-    assert "plan" not in final
+    assert final.get("plan") is None
+
+
+# --- operator ----------------------------------------------------------------
+def test_execute_plan_counts_invalid_attempts_without_checks():
+    from agents.operator import execute_plan
+    from core.spec import goal_facts
+
+    state = scenario_state("A")
+    goals = goal_facts(state.to_facts())
+    bad = [{"action": a, "args": args} for a, args in BAD_A]
+    r = execute_plan(state, bad, goals, check_first=False, allow_replan=False)
+    assert r.attempted_invalid == 1 and not r.goal_reached
+
+
+def test_execute_plan_replans_blocked_steps_when_checking():
+    from agents.operator import execute_plan
+    from core.spec import goal_facts
+
+    state = scenario_state("A")
+    goals = goal_facts(state.to_facts())
+    bad = [{"action": a, "args": args} for a, args in BAD_A]
+    r = execute_plan(state, bad, goals)
+    assert r.goal_reached and r.attempted_invalid == 0 and len(r.replans) == 1
+
+
+# --- comms -------------------------------------------------------------------
+def test_comms_rejects_long_or_internal_sms_and_falls_back():
+    from agents.comms import CommsDraft, write_comms
+
+    bad = CommsDraft(sms=[{"sector_id": "S3", "text": "Tower T3 is down"}], report_markdown="# r")
+    facts = {
+        "incident_text": "x",
+        "faults": {"T3": "power"},
+        "affected_sectors": ["S3"],
+        "restored": True,
+        "actions": [],
+        "replans": [],
+        "duration_s": 1,
+        "status": "ok",
+    }
+    out = write_comms(facts, writer=scripted(bad, bad))
+    sms = out["sms"][0]["text"]
+    assert "T3" not in sms and "City Mall" in sms and len(sms) <= 160
+    assert out["report"] == "# r"
+
+
+def test_comms_template_when_llm_unavailable():
+    from agents.comms import write_comms
+
+    facts = {
+        "incident_text": "x",
+        "faults": {},
+        "affected_sectors": ["S2"],
+        "restored": False,
+        "actions": ["a"],
+        "replans": [],
+        "duration_s": 3,
+        "status": "failed",
+    }
+    out = write_comms(facts, writer=scripted(RuntimeError("down")))
+    assert out["source"] == "template" and "Railway Station" in out["sms"][0]["text"]
+    assert "## Root cause" in out["report"]
