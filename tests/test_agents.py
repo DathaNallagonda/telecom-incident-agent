@@ -273,3 +273,37 @@ def test_comms_template_when_llm_unavailable():
     out = write_comms(facts, writer=scripted(RuntimeError("down")))
     assert out["source"] == "template" and "Railway Station" in out["sms"][0]["text"]
     assert "## Root cause" in out["report"]
+
+
+# --- free-tier changes: observed sectors, paired baseline ---------------------
+def test_planner_restores_sectors_triage_missed():
+    """M5-style miss: triage lists no sector, but S3 is visibly without service."""
+    from agents.planner_agent import affected_sectors
+
+    t = triage_for(sectors=())
+    assert affected_sectors(scenario_state("A"), t) == ["S3"]
+    r = plan_with_verification(t, scenario_state("A"), proposer=scripted(draft(GOOD_A)))
+    assert r.valid and any(s["action"] == "restore_service" for s in r.steps)
+
+
+def test_paired_baseline_is_the_first_unchecked_proposal():
+    from agents.planner_agent import baseline_from_first_round
+
+    seen = []
+
+    def respond(messages):
+        seen.append(1)
+        return draft(BAD_A) if len(seen) == 1 else draft(GOOD_A)
+
+    r = plan_with_verification(triage_for(), scenario_state("A"), proposer=RunnableLambda(respond))
+    b = baseline_from_first_round(r)
+    assert r.valid and not b.valid and b.source == "llm_only"
+    assert b.steps == [{"action": a, "args": args} for a, args in BAD_A]
+
+
+def test_paired_baseline_when_llm_unavailable():
+    from agents.planner_agent import PlanResult, RoundLog, baseline_from_first_round
+
+    r = PlanResult([], "planner_fallback", True, 0, [RoundLog(0, [], False, "no key")])
+    b = baseline_from_first_round(r)
+    assert not b.valid and b.message == "no key"

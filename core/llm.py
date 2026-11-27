@@ -33,12 +33,20 @@ GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
 # Extra Gemini hop: 3.8 Flash often hits free-tier quota (429) or 503s.
 GEMINI_BACKUP_MODEL = os.getenv("GEMINI_BACKUP_MODEL", "gemini-3.6-flash")
 GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
+
+
+def _groq_models() -> list[str]:
+    """Groq models in order. Free-tier limits are per model, so the 20b model is a
+    fallback with its own quota. GROQ_MODELS=<one model> pins a benchmark run."""
+    raw = os.getenv("GROQ_MODELS", f"{GROQ_MODEL},openai/gpt-oss-20b")
+    return [m.strip() for m in raw.split(",") if m.strip()]
 TIMEOUT_S = float(os.getenv("LLM_TIMEOUT_S", "20"))
 
 
 def _providers() -> list[str]:
-    """Model chain, e.g. LLM_PROVIDERS=groq pins the evaluation to one model."""
-    return [p.strip() for p in os.getenv("LLM_PROVIDERS", "gemini,groq").split(",") if p.strip()]
+    """Provider order. Default: Groq first (fast, most reliable on the free tier), then
+    Gemini. LLM_PROVIDERS=groq keeps the benchmark on Groq only."""
+    return [p.strip() for p in os.getenv("LLM_PROVIDERS", "groq,gemini").split(",") if p.strip()]
 
 
 def _max_retries() -> int:
@@ -184,14 +192,14 @@ def _gemini(model: str = GEMINI_MODEL) -> BaseChatModel | None:
     )
 
 
-def _groq() -> BaseChatModel | None:
+def _groq(model: str = GROQ_MODEL) -> BaseChatModel | None:
     key = _secret("GROQ_API_KEY")
     if not key:
         return None
     from langchain_groq import ChatGroq
 
     return ChatGroq(
-        model=GROQ_MODEL,
+        model=model,
         api_key=key,
         temperature=0,
         timeout=TIMEOUT_S,
@@ -201,13 +209,13 @@ def _groq() -> BaseChatModel | None:
 
 
 def chat_models() -> list[BaseChatModel]:
-    """Available models in priority order (default: Gemini 3.8, Gemini 3.6, Groq)."""
+    """Available models in priority order (default: Groq 120b, Groq 20b, Gemini 3.8, Gemini 3.6)."""
     candidates: list[BaseChatModel | None] = []
     for provider in _providers():
         if provider == "gemini":
             candidates += [_gemini(GEMINI_MODEL), _gemini(GEMINI_BACKUP_MODEL)]
         elif provider == "groq":
-            candidates.append(_groq())
+            candidates += [_groq(m) for m in _groq_models()]
     models = [m for m in candidates if m is not None]
     if not models:
         raise LLMUnavailableError(

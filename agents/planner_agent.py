@@ -112,10 +112,42 @@ def _draft_steps(draft) -> list[dict]:
     return [{"action": s["action"], "args": list(s["args"])} for s in draft["steps"]]
 
 
+def affected_sectors(state: NetworkState, triage: TriageResult) -> list[str]:
+    """Sectors to restore: those the network shows without service, plus triage's list.
+
+    Service status is observable, so code decides it rather than trusting the LLM
+    (agents for judgment, code for guarantees). Triage can still add a sector it
+    believes is affected; it can no longer drop one that is visibly down.
+    """
+    observed = {s.id for s in state.sectors.values() if not s.served}
+    return sorted(observed | set(triage.affected_sectors))
+
+
 def make_problem(state: NetworkState, triage: TriageResult, goals="default"):
     faults = {f.node_id: f.fault_type for f in triage.fault_types}
-    belief = belief_state(state, faults, triage.affected_sectors)
+    belief = belief_state(state, faults, affected_sectors(state, triage))
     return belief, build_problem(belief, goals)
+
+
+def baseline_from_first_round(plan: PlanResult) -> PlanResult:
+    """The LLM-only baseline, paired with a verified run.
+
+    The baseline's prompt is the loop's first-round prompt, so the loop's first,
+    unchecked proposal IS a baseline sample. Reusing it saves an LLM call per run
+    and compares the same proposal with and without the verifier.
+    """
+    first = next((r for r in plan.validation_log if r.round == 1), None)
+    if first is None:  # the LLM was unavailable
+        reason = plan.validation_log[0].reason if plan.validation_log else "no LLM proposal"
+        return PlanResult([], "llm_only", False, 1, [], reason)
+    return PlanResult(
+        first.steps,
+        "llm_only",
+        first.valid,
+        1,
+        [first],
+        "valid" if first.valid else first.reason,
+    )
 
 
 def plan_with_verification(

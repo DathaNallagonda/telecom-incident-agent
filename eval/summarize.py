@@ -286,15 +286,57 @@ def write_markdown(summary: dict, rows: list[dict]) -> str:
     return "\n".join(lines)
 
 
+MAIN_MODEL = "openai/gpt-oss-120b"
+CHARTS = ["valid_plan_rate.png", "goal_reached_rate.png", "unsafe_actions.png"]
+
+
+def model_comparison(by_model: dict[str, dict]) -> str:
+    """Side-by-side table: does the verifier matter more for a weaker model?"""
+    lines = [
+        "## Model comparison",
+        "",
+        "| Model | Runs | Valid plans (base / sys) | Goal reached (base / sys) | "
+        "Unsafe attempts (base / sys) | LLM fixed after feedback | Fallback |",
+        "| --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    for model, s in by_model.items():
+        a = s["all"]
+        lines.append(
+            f"| `{model}` | {a['runs']} | {a['valid_plan_rate']['baseline']:.0f}% / "
+            f"{a['valid_plan_rate']['system']:.0f}% | {a['goal_reached_rate']['baseline']:.0f}% / "
+            f"{a['goal_reached_rate']['system']:.0f}% | "
+            f"{a['unsafe_or_invalid_attempted']['baseline']} / "
+            f"{a['unsafe_or_invalid_attempted']['system']} | "
+            f"{a['llm_fixed_after_feedback']:.0f}% | {a['fallback_rate']:.0f}% |"
+        )
+    return "\n".join(lines) + "\n"
+
+
 def main() -> None:
-    rows = load()
+    all_rows = load()
+    by_model_rows: dict[str, list[dict]] = defaultdict(list)
+    for r in all_rows:
+        by_model_rows[r["model"]].append(r)
+    main_model = MAIN_MODEL if MAIN_MODEL in by_model_rows else next(iter(by_model_rows), None)
+    rows = by_model_rows.get(main_model, [])
     summary = summarise(rows)
+    by_model = {m: summarise(r) for m, r in by_model_rows.items()}
     RESULTS_JSON.write_text(
-        json.dumps({"summary": summary, "runs": rows}, indent=1), encoding="utf-8"
+        json.dumps(
+            {"main_model": main_model, "summary": summary, "by_model": by_model, "runs": all_rows},
+            indent=1,
+        ),
+        encoding="utf-8",
     )
-    SUMMARY_MD.write_text(write_markdown(summary, rows), encoding="utf-8")
-    if summary:
-        DOCS.mkdir(exist_ok=True)
+    text = write_markdown(summary, rows)
+    if len(by_model) > 1:
+        text += "\n" + model_comparison(by_model)
+    SUMMARY_MD.write_text(text, encoding="utf-8")
+    DOCS.mkdir(exist_ok=True)
+    if not summary:  # no results: remove stale charts so the app shows none
+        for name in CHARTS:
+            (DOCS / name).unlink(missing_ok=True)
+    else:
         grouped_bars(
             summary,
             "valid_plan_rate",

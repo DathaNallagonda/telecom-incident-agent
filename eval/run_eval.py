@@ -4,31 +4,38 @@ For each scenario and run:
   1. Triage Agent reads the incident text (shared by both arms, scored vs expected).
   2. System: verify-and-fix loop, then the Operator executes with precondition
      checks and replanning (auto-approved).
-  3. Baseline: one LLM plan from the same first prompt, executed as-is with no
-     checks and no replanning; steps with unmet preconditions count as unsafe
-     or invalid actions attempted.
+  3. Baseline: the loop's FIRST proposal (same prompt, no verifier feedback, no
+     fallback), executed as-is with no checks and no replanning; steps with
+     unmet preconditions count as unsafe or invalid actions attempted. Pairing
+     the arms on one sample saves an LLM call per run on the free tier.
 Goal reached is checked on the TRUE network after execution.
 
-The model is pinned to Groq gpt-oss-120b (one model, clean numbers), the cache
-is off (each run is a fresh sample), and every finished run is appended to
-eval/results.jsonl, so the harness resumes where it stopped. It stops cleanly
-when Groq's daily token limit is hit.
+One Groq model per run (default gpt-oss-120b; --model openai/gpt-oss-20b for
+the weaker-model comparison, which has its own free-tier quota). The cache is
+off (each run is a fresh sample), and every finished run is appended to
+eval/results.jsonl, so the harness resumes where it stopped, per model. It
+stops cleanly when Groq's daily token limit is hit.
 
-Run:  python -m eval.run_eval [--runs 3] [--only P1,L1] [--pause 20]
+Run:  python -m eval.run_eval [--model openai/gpt-oss-20b] [--runs 3] [--only P1,L1]
 Then: python -m eval.summarize
 """
 
 from __future__ import annotations
 
 import os
+import sys
 
+# Pin the model BEFORE core.llm is imported: --model openai/gpt-oss-20b
+_MODEL = "openai/gpt-oss-120b"
+if "--model" in sys.argv:
+    _MODEL = sys.argv[sys.argv.index("--model") + 1]
+os.environ["GROQ_MODELS"] = _MODEL
 os.environ.setdefault("LLM_PROVIDERS", "groq")
 os.environ.setdefault("LLM_CACHE", "0")
 os.environ.setdefault("LLM_MAX_RETRIES", "4")
 
 import argparse  # noqa: E402
 import json  # noqa: E402
-import sys  # noqa: E402
 import time  # noqa: E402
 import warnings  # noqa: E402
 from pathlib import Path  # noqa: E402
@@ -36,9 +43,12 @@ from pathlib import Path  # noqa: E402
 warnings.filterwarnings("ignore")
 
 from agents.operator import execute_plan  # noqa: E402
-from agents.planner_agent import baseline_plan, plan_with_verification  # noqa: E402
+from agents.planner_agent import (  # noqa: E402
+    affected_sectors,
+    baseline_from_first_round,
+    plan_with_verification,
+)
 from agents.triage import run_triage  # noqa: E402
-from core.llm import GROQ_MODEL  # noqa: E402
 from core.simulator import inject_failure, sample_network  # noqa: E402
 from core.spec import goal_facts  # noqa: E402
 
@@ -111,12 +121,14 @@ def run_one(scenario: dict, run: int) -> dict:
     triage_s = time.perf_counter() - t0
     _check_rate_limited(outcome.error)
     record = {
+        "version": 2,
         "scenario": scenario["id"],
         "type": scenario["type"],
         "run": run,
-        "model": GROQ_MODEL,
+        "model": _MODEL,
         "ts": time.strftime("%Y-%m-%dT%H:%M:%S"),
         "optimal_len": scenario["optimal_plan_length"],
+        "planned_sectors": None,
         "triage": score_triage(outcome.result, scenario["expected_triage"])
         | {"error": outcome.error, "latency_s": round(triage_s, 2)},
     }
@@ -127,6 +139,8 @@ def run_one(scenario: dict, run: int) -> dict:
             "skipped": "triage failed",
         }
         return record
+
+    record["planned_sectors"] = affected_sectors(truth, outcome.result)
 
     # --- full system
     t0 = time.perf_counter()
@@ -152,10 +166,8 @@ def run_one(scenario: dict, run: int) -> dict:
         "latency_s": round(triage_s + plan_s, 2),
     } | execution_summary(sys_exec)
 
-    # --- LLM-only baseline
-    t0 = time.perf_counter()
-    base = baseline_plan(outcome.result, truth.copy(), goal_mode)
-    base_s = time.perf_counter() - t0
+    # --- LLM-only baseline: the loop's first, unchecked proposal (paired sample)
+    base = baseline_from_first_round(plan)
     _check_rate_limited(base.message)
     base_exec = execute_plan(
         truth.copy(),
@@ -171,7 +183,7 @@ def run_one(scenario: dict, run: int) -> dict:
         "plan_len": len(base.steps),
         "steps": [f"{s['action']}({', '.join(s['args'])})" for s in base.steps],
         "invalid_reason": None if base.valid else base.message,
-        "latency_s": round(triage_s + base_s, 2),
+        "latency_s": None,  # shares the system's first LLM call
     } | execution_summary(base_exec)
     return record
 
@@ -183,7 +195,8 @@ def done_runs() -> set[tuple[str, int]]:
     for line in RESULTS.read_text(encoding="utf-8").splitlines():
         if line.strip():
             r = json.loads(line)
-            out.add((r["scenario"], r["run"]))
+            if r.get("model") == _MODEL:
+                out.add((r["scenario"], r["run"]))
     return out
 
 
@@ -192,6 +205,7 @@ def main() -> int:
     ap.add_argument("--runs", type=int, default=3)
     ap.add_argument("--only", default="", help="comma-separated scenario ids")
     ap.add_argument("--pause", type=float, default=20, help="seconds between runs (TPM)")
+    ap.add_argument("--model", default=_MODEL, help="Groq model to pin (read at import)")
     args = ap.parse_args()
 
     scenarios = json.loads(SCENARIOS.read_text(encoding="utf-8"))
