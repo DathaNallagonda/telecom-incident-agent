@@ -14,6 +14,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
+from matplotlib.ticker import MaxNLocator  # noqa: E402
 
 HERE = Path(__file__).parent
 ROOT = HERE.parent
@@ -52,7 +53,13 @@ def mean(values) -> float | None:
     return round(st.mean(values), 2) if values else None
 
 
+def injected_ids() -> set[str]:
+    scenarios = json.loads((HERE / "scenarios.json").read_text(encoding="utf-8"))
+    return {s["id"] for s in scenarios if s["inject_failure_during_execution"]}
+
+
 def summarise(rows: list[dict]) -> dict:
+    injected_scenarios = injected_ids()
     groups: dict[str, list[dict]] = defaultdict(list)
     for r in rows:
         groups[r["type"]].append(r)
@@ -66,9 +73,8 @@ def summarise(rows: list[dict]) -> dict:
         base = [r["baseline"] for r in g]
         planned = [(r["system"], r["optimal_len"]) for r in g if r["system"].get("plan_len")]
         bplanned = [(r["baseline"], r["optimal_len"]) for r in g if r["baseline"].get("plan_len")]
-        injected = [
-            r for r in g if r["system"].get("replans") is not None and r["system"]["replans"] > 0
-        ]
+        injected = [r for r in g if r["scenario"] in injected_scenarios]
+        clean = [r for r in g if r["scenario"] not in injected_scenarios]
         out[key] = {
             "runs": len(g),
             "scenarios": len({r["scenario"] for r in g}),
@@ -79,6 +85,16 @@ def summarise(rows: list[dict]) -> dict:
             "goal_reached_rate": {
                 "baseline": pct(b["goal_reached"] for b in base),
                 "system": pct(s["goal_reached"] for s in sys_),
+            },
+            "goal_reached_without_injected_failure": {
+                "runs": len(clean),
+                "baseline": pct(r["baseline"]["goal_reached"] for r in clean),
+                "system": pct(r["system"]["goal_reached"] for r in clean),
+            },
+            "goal_reached_with_injected_failure": {
+                "runs": len(injected),
+                "baseline": pct(r["baseline"]["goal_reached"] for r in injected),
+                "system": pct(r["system"]["goal_reached"] for r in injected),
             },
             "unsafe_or_invalid_attempted": {
                 "baseline": sum(b.get("attempted_invalid", 0) for b in base),
@@ -149,15 +165,22 @@ def grouped_bars(
                 color=TEXT,
             )
     ax.set_xticks(list(xs), [TYPE_LABEL[k] for k in keys])
+    # the "All scenarios" group is a total: set it apart with a hairline
+    if "all" in keys and len(keys) > 1:
+        ax.axvline(len(keys) - 1.5, color=GRID, linewidth=1)
     if percent:
         ax.set_ylim(0, 110)
         ax.set_yticks([0, 25, 50, 75, 100])
+    else:  # counts: whole-number ticks only
+        top = max(base + syst + [1])
+        ax.set_ylim(0, top * 1.15 + 0.5)
+        ax.yaxis.set_major_locator(MaxNLocator(integer=True))
     _style(ax, ylabel)
-    ax.set_title(title, loc="left", color=TEXT, fontsize=12, pad=14)
+    ax.set_title(title, loc="left", color=TEXT, fontsize=12, pad=10)
     leg = ax.legend(
         frameon=False,
-        loc="upper left",
-        bbox_to_anchor=(0, 1.02),
+        loc="upper center",
+        bbox_to_anchor=(0.5, -0.09),
         ncol=2,
         fontsize=9,
         labelcolor=TEXT2,
@@ -179,9 +202,11 @@ def write_markdown(summary: dict, rows: list[dict]) -> str:
         f"{a['runs']} runs over {a['scenarios']} scenarios; model `{model}`; "
         "goal reached is checked on the true network after execution.",
         "",
-        f"**Headline:** valid plans {a['valid_plan_rate']['system']:.0f}% (system) vs "
-        f"{a['valid_plan_rate']['baseline']:.0f}% (LLM-only baseline); unsafe or invalid "
-        f"actions attempted: {a['unsafe_or_invalid_attempted']['system']} vs "
+        "**Headline:** incidents fully resolved "
+        f"{a['goal_reached_rate']['system']:.0f}% (system) vs "
+        f"{a['goal_reached_rate']['baseline']:.0f}% (LLM-only baseline); valid plans "
+        f"{a['valid_plan_rate']['system']:.0f}% vs {a['valid_plan_rate']['baseline']:.0f}%; "
+        f"unsafe or invalid actions attempted: {a['unsafe_or_invalid_attempted']['system']} vs "
         f"{a['unsafe_or_invalid_attempted']['baseline']}.",
         "",
         "| Metric | Baseline | System |",
@@ -190,6 +215,14 @@ def write_markdown(summary: dict, rows: list[dict]) -> str:
         f"{a['valid_plan_rate']['system']:.0f}% |",
         f"| Goal reached after execution | {a['goal_reached_rate']['baseline']:.0f}% | "
         f"{a['goal_reached_rate']['system']:.0f}% |",
+        "| ...without injected failures "
+        f"({a['goal_reached_without_injected_failure']['runs']} runs)"
+        f" | {a['goal_reached_without_injected_failure']['baseline']:.0f}% | "
+        f"{a['goal_reached_without_injected_failure']['system']:.0f}% |",
+        f"| ...with an injected restart failure "
+        f"({a['goal_reached_with_injected_failure']['runs']} runs) | "
+        f"{a['goal_reached_with_injected_failure']['baseline']:.0f}% | "
+        f"{a['goal_reached_with_injected_failure']['system']:.0f}% |",
         f"| Unsafe or invalid actions attempted (total) | "
         f"{a['unsafe_or_invalid_attempted']['baseline']} | "
         f"{a['unsafe_or_invalid_attempted']['system']} |",
@@ -233,6 +266,19 @@ def write_markdown(summary: dict, rows: list[dict]) -> str:
             )
     lines += [
         "",
+        "## How to read this",
+        "",
+        "- The baseline has no verifier and no replanning, by design. In the 4 scenarios with "
+        "an injected restart failure it cannot recover, so most of the goal-reached gap measures "
+        "replanning, not plan quality.",
+        "- The verifier's direct effect shows in valid plans and unsafe actions: an LLM plan that "
+        "breaks a precondition is fixed before it runs (system) or runs as-is (baseline).",
+        "- The system plans from what triage believes. When triage misses an affected sector, "
+        "the first plan misses it too; only a replan from the live network recovers it.",
+        "- One model (Groq gpt-oss-120b) for both arms; temperature 0; cache off so each run "
+        "is a fresh sample.",
+        "",
+        "![Goal reached](../docs/goal_reached_rate.png)",
         "![Valid plans](../docs/valid_plan_rate.png)",
         "![Unsafe actions](../docs/unsafe_actions.png)",
         "",
@@ -255,6 +301,14 @@ def main() -> None:
             "Valid plans: LLM-only vs verified system",
             "Runs with a valid plan (%)",
             DOCS / "valid_plan_rate.png",
+            True,
+        )
+        grouped_bars(
+            summary,
+            "goal_reached_rate",
+            "Incident fully resolved on the real network",
+            "Runs reaching the goal (%)",
+            DOCS / "goal_reached_rate.png",
             True,
         )
         grouped_bars(

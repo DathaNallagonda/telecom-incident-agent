@@ -365,6 +365,9 @@ with tab_bench:
             for line in text.splitlines()
             if not line.startswith("![") and not line.startswith("# ")
         )
+        goal_png = ROOT / "docs" / "goal_reached_rate.png"
+        if goal_png.exists():
+            st.image(str(goal_png), width="stretch")
         st.markdown(body)
         c1, c2 = st.columns(2)
         for col, name in [(c1, "valid_plan_rate.png"), (c2, "unsafe_actions.png")]:
