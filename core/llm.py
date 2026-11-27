@@ -40,6 +40,8 @@ def _groq_models() -> list[str]:
     fallback with its own quota. GROQ_MODELS=<one model> pins a benchmark run."""
     raw = os.getenv("GROQ_MODELS", f"{GROQ_MODEL},openai/gpt-oss-20b")
     return [m.strip() for m in raw.split(",") if m.strip()]
+
+
 TIMEOUT_S = float(os.getenv("LLM_TIMEOUT_S", "20"))
 
 

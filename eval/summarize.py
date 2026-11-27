@@ -312,6 +312,69 @@ def model_comparison(by_model: dict[str, dict]) -> str:
     return "\n".join(lines) + "\n"
 
 
+README = ROOT / "README.md"
+START, END = "<!-- results:start -->", "<!-- results:end -->"
+
+
+def update_readme(summary: dict, main_model: str | None, by_model: dict[str, dict]) -> None:
+    """Rewrite the README's results block so its numbers always match the latest runs."""
+    if not README.exists():
+        return
+    text = README.read_text(encoding="utf-8")
+    if START not in text or END not in text:
+        return
+    a = summary.get("all")
+    if not a:
+        block = "_Benchmark in progress; results will appear here._"
+    else:
+        clean = a["goal_reached_without_injected_failure"]
+        inj = a["goal_reached_with_injected_failure"]
+        lines = [
+            f"Model `{main_model}`, {a['runs']} runs over {a['scenarios']} scenarios.",
+            "",
+            "| Metric | LLM-only baseline | Verified system |",
+            "| --- | --- | --- |",
+            f"| Valid plans | {a['valid_plan_rate']['baseline']:.0f}% | "
+            f"{a['valid_plan_rate']['system']:.0f}% |",
+            f"| Unsafe or invalid actions attempted | "
+            f"{a['unsafe_or_invalid_attempted']['baseline']} | "
+            f"{a['unsafe_or_invalid_attempted']['system']} |",
+            f"| Incident resolved, no injected failure ({clean['runs']} runs) | "
+            f"{clean['baseline']:.0f}% | {clean['system']:.0f}% |",
+            f"| Incident resolved, restart fails mid-run ({inj['runs']} runs) | "
+            f"{inj['baseline']:.0f}% | {inj['system']:.0f}% |",
+            f"| Plan length / optimal | {a['plan_len_over_optimal']['baseline']} | "
+            f"{a['plan_len_over_optimal']['system']} |",
+            "",
+            f"Triage exact match {a['triage_exact_rate']:.0f}%; LLM plans fixed after "
+            f"verifier feedback {a['llm_fixed_after_feedback']:.0f}%; pyperplan fallback "
+            f"{a['fallback_rate']:.0f}%.",
+        ]
+        for model, s in by_model.items():
+            if model != main_model and s.get("all"):
+                o = s["all"]
+                lines += [
+                    "",
+                    f"Weaker model `{model}` ({o['runs']} runs): valid plans "
+                    f"{o['valid_plan_rate']['baseline']:.0f}% (baseline) vs "
+                    f"{o['valid_plan_rate']['system']:.0f}% (system); unsafe or invalid "
+                    f"actions {o['unsafe_or_invalid_attempted']['baseline']} vs "
+                    f"{o['unsafe_or_invalid_attempted']['system']}.",
+                ]
+        lines += [
+            "",
+            "![Goal reached](docs/goal_reached_rate.png)",
+            "",
+            "| Valid plans | Unsafe or invalid actions |",
+            "| --- | --- |",
+            "| ![Valid plans](docs/valid_plan_rate.png) | "
+            "![Unsafe actions](docs/unsafe_actions.png) |",
+        ]
+        block = "\n".join(lines)
+    i, j = text.index(START) + len(START), text.index(END)
+    README.write_text(text[:i] + "\n" + block + "\n" + text[j:], encoding="utf-8")
+
+
 def main() -> None:
     all_rows = load()
     by_model_rows: dict[str, list[dict]] = defaultdict(list)
@@ -332,6 +395,7 @@ def main() -> None:
     if len(by_model) > 1:
         text += "\n" + model_comparison(by_model)
     SUMMARY_MD.write_text(text, encoding="utf-8")
+    update_readme(summary, main_model, by_model)
     DOCS.mkdir(exist_ok=True)
     if not summary:  # no results: remove stale charts so the app shows none
         for name in CHARTS:

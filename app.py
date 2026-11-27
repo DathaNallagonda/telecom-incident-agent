@@ -41,6 +41,24 @@ POS = {
 }
 
 
+QUOTA_MARKERS = ("429", "rate limit", "Rate limit", "quota", "RESOURCE_EXHAUSTED", "RateLimit")
+
+
+def show_error(message: str) -> None:
+    """Plain-language error; quota errors get their own explanation, details folded away."""
+    if any(m in message for m in QUOTA_MARKERS):
+        st.error(
+            "**The free LLM quota is used up right now.** Every model in the chain "
+            "(Groq gpt-oss-120b, gpt-oss-20b, Gemini) hit its free-tier limit. Groq limits "
+            "reset within a few minutes to hours; Gemini's reset daily. The Benchmark tab "
+            "still works because it reads saved results."
+        )
+    else:
+        st.error(message[:300])
+    with st.expander("Error details"):
+        st.code(message, language="text")
+
+
 def has_llm_key() -> bool:
     try:
         llm_mod.chat_models()
@@ -211,14 +229,7 @@ with tab_run:
                 custom.strip() or sc["incident_text"], scenario_network(sc), goal_mode, inject
             )
         except Exception as e:  # noqa: BLE001
-            msg = str(e)
-            if any(m in msg for m in ("429", "rate", "quota", "RESOURCE_EXHAUSTED")):
-                st.error(
-                    "The free LLM quota is used up for now. Try again in a minute, "
-                    "or see the Benchmark tab for saved results."
-                )
-            else:
-                st.error(f"Run failed: {type(e).__name__}: {msg[:300]}")
+            show_error(f"Run failed: {type(e).__name__}: {e}")
 
     res = st.session_state.get("result")
     net = from_dict(res["network"]) if res else scenario_network(sc)
@@ -259,7 +270,7 @@ with tab_run:
                         language="text",
                     )
         for err in (res or {}).get("errors", []):
-            st.error(err)
+            show_error(err)
 
     if res and res.get("first_plan"):
         st.subheader("3 · Plan")

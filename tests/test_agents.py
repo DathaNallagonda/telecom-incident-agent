@@ -307,3 +307,23 @@ def test_paired_baseline_when_llm_unavailable():
     r = PlanResult([], "planner_fallback", True, 0, [RoundLog(0, [], False, "no key")])
     b = baseline_from_first_round(r)
     assert not b.valid and b.message == "no key"
+
+
+def test_triage_retries_once_after_malformed_tool_call(monkeypatch):
+    from langchain_core.messages import AIMessage as AI
+
+    import agents.triage as triage_mod
+
+    calls = []
+
+    def flaky(model, text, state):
+        calls.append(1)
+        if len(calls) == 1:
+            raise RuntimeError("Tool call validation failed: run_diagnostics<|channel|>x")
+        return [AI("T3 has a power fault; S3 down")]
+
+    monkeypatch.setattr(triage_mod.llm_mod, "chat_models", lambda: ["fake-model"])
+    monkeypatch.setattr(triage_mod, "investigate", flaky)
+    monkeypatch.setattr(triage_mod, "report", lambda *a, **k: (triage_for(), None))
+    out = triage_mod.run_triage("no signal", scenario_state("A"))
+    assert len(calls) == 2 and out.result is not None

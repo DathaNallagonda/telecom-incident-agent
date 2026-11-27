@@ -133,12 +133,21 @@ def run_triage(incident_text: str, state: NetworkState) -> TriageOutcome:
 
     messages, used, last_error = [], "", None
     for model in models:
-        try:
-            messages = investigate(model, incident_text, state)
-            used = getattr(model, "model", None) or getattr(model, "model_name", "")
+        for attempt in range(2):
+            try:
+                messages = investigate(model, incident_text, state)
+                used = getattr(model, "model", None) or getattr(model, "model_name", "")
+                break
+            except Exception as e:
+                last_error = f"{type(e).__name__}: {str(e)[:200]}"
+                # A malformed tool call (smaller models sometimes garble tool names) is
+                # worth one retry on the same model; anything else (rate limit, outage)
+                # moves straight on to the next model.
+                if attempt == 0 and "tool" in str(e).lower() and "429" not in str(e):
+                    continue
+                break
+        if messages:
             break
-        except Exception as e:  # provider down: try the next model
-            last_error = f"{type(e).__name__}: {str(e)[:200]}"
     if not messages:
         return TriageOutcome(None, f"investigation failed on every model: {last_error}")
 
