@@ -2,7 +2,7 @@
  "main_model": "openai/gpt-oss-20b",
  "summary": {
   "power": {
-   "runs": 5,
+   "runs": 10,
    "scenarios": 5,
    "valid_plan_rate": {
     "baseline": 80.0,
@@ -13,12 +13,12 @@
     "system": 80.0
    },
    "goal_reached_without_injected_failure": {
-    "runs": 4,
+    "runs": 8,
     "baseline": 75.0,
     "system": 75.0
    },
    "goal_reached_with_injected_failure": {
-    "runs": 1,
+    "runs": 2,
     "baseline": 0.0,
     "system": 100.0
    },
@@ -41,17 +41,17 @@
    "fallback_rate": 0.0,
    "llm_fixed_after_feedback": 0.0,
    "replan_recovery_rate": 100.0,
-   "replan_runs": 1,
+   "replan_runs": 2,
    "latency_s": {
     "baseline": null,
-    "system": 15.52
+    "system": 15.0
    }
   },
   "hardware": {
-   "runs": 5,
+   "runs": 10,
    "scenarios": 5,
    "valid_plan_rate": {
-    "baseline": 80.0,
+    "baseline": 90.0,
     "system": 100.0
    },
    "goal_reached_rate": {
@@ -59,12 +59,12 @@
     "system": 100.0
    },
    "goal_reached_without_injected_failure": {
-    "runs": 4,
+    "runs": 8,
     "baseline": 100.0,
     "system": 100.0
    },
    "goal_reached_with_injected_failure": {
-    "runs": 1,
+    "runs": 2,
     "baseline": 0.0,
     "system": 100.0
    },
@@ -73,40 +73,40 @@
     "system": 0
    },
    "runs_with_unsafe_or_invalid": {
-    "baseline": 20.0,
+    "baseline": 10.0,
     "system": 0.0
    },
    "plan_len_over_optimal": {
-    "baseline": 1.03,
+    "baseline": 1.02,
     "system": 1.0
    },
    "triage_exact_rate": 100.0,
    "triage_fault_acc": 1.0,
    "triage_sector_acc": 1.0,
-   "avg_llm_rounds": 1.2,
+   "avg_llm_rounds": 1.1,
    "fallback_rate": 0.0,
-   "llm_fixed_after_feedback": 20.0,
+   "llm_fixed_after_feedback": 10.0,
    "replan_recovery_rate": 100.0,
-   "replan_runs": 1,
+   "replan_runs": 2,
    "latency_s": {
     "baseline": null,
-    "system": 20.61
+    "system": 18.45
    }
   },
   "link": {
-   "runs": 5,
+   "runs": 8,
    "scenarios": 5,
    "valid_plan_rate": {
-    "baseline": 80.0,
+    "baseline": 75.0,
     "system": 100.0
    },
    "goal_reached_rate": {
-    "baseline": 80.0,
+    "baseline": 75.0,
     "system": 100.0
    },
    "goal_reached_without_injected_failure": {
-    "runs": 5,
-    "baseline": 80.0,
+    "runs": 8,
+    "baseline": 75.0,
     "system": 100.0
    },
    "goal_reached_with_injected_failure": {
@@ -115,45 +115,45 @@
     "system": 0.0
    },
    "unsafe_or_invalid_attempted": {
-    "baseline": 2,
+    "baseline": 4,
     "system": 0
    },
    "runs_with_unsafe_or_invalid": {
-    "baseline": 20.0,
+    "baseline": 25.0,
     "system": 0.0
    },
    "plan_len_over_optimal": {
-    "baseline": 1.6,
-    "system": 1.6
+    "baseline": 1.94,
+    "system": 1.94
    },
    "triage_exact_rate": 100.0,
    "triage_fault_acc": 1.0,
    "triage_sector_acc": 1.0,
-   "avg_llm_rounds": 1.2,
+   "avg_llm_rounds": 1.25,
    "fallback_rate": 0.0,
-   "llm_fixed_after_feedback": 20.0,
+   "llm_fixed_after_feedback": 25.0,
    "replan_recovery_rate": null,
    "replan_runs": 0,
    "latency_s": {
     "baseline": null,
-    "system": 19.67
+    "system": 17.54
    }
   },
-  "all": {
-   "runs": 15,
-   "scenarios": 15,
+  "multi": {
+   "runs": 5,
+   "scenarios": 5,
    "valid_plan_rate": {
-    "baseline": 80.0,
-    "system": 93.33333333333333
+    "baseline": 40.0,
+    "system": 100.0
    },
    "goal_reached_rate": {
-    "baseline": 73.33333333333333,
-    "system": 93.33333333333333
+    "baseline": 40.0,
+    "system": 100.0
    },
    "goal_reached_without_injected_failure": {
-    "runs": 13,
-    "baseline": 84.61538461538461,
-    "system": 92.3076923076923
+    "runs": 3,
+    "baseline": 66.66666666666667,
+    "system": 100.0
    },
    "goal_reached_with_injected_failure": {
     "runs": 2,
@@ -161,35 +161,81 @@
     "system": 100.0
    },
    "unsafe_or_invalid_attempted": {
-    "baseline": 3,
+    "baseline": 0,
     "system": 0
    },
    "runs_with_unsafe_or_invalid": {
-    "baseline": 13.333333333333334,
+    "baseline": 0.0,
     "system": 0.0
    },
    "plan_len_over_optimal": {
-    "baseline": 1.23,
-    "system": 1.21
+    "baseline": 1.34,
+    "system": 1.26
    },
-   "triage_exact_rate": 93.33333333333333,
-   "triage_fault_acc": 0.93,
-   "triage_sector_acc": 0.93,
-   "avg_llm_rounds": 1.14,
-   "fallback_rate": 0.0,
-   "llm_fixed_after_feedback": 13.333333333333334,
+   "triage_exact_rate": 20.0,
+   "triage_fault_acc": 1.0,
+   "triage_sector_acc": 0.5,
+   "avg_llm_rounds": 2.4,
+   "fallback_rate": 20.0,
+   "llm_fixed_after_feedback": 40.0,
    "replan_recovery_rate": 100.0,
    "replan_runs": 2,
    "latency_s": {
     "baseline": null,
-    "system": 18.82
+    "system": 67.5
+   }
+  },
+  "all": {
+   "runs": 33,
+   "scenarios": 20,
+   "valid_plan_rate": {
+    "baseline": 75.75757575757575,
+    "system": 93.93939393939394
+   },
+   "goal_reached_rate": {
+    "baseline": 66.66666666666667,
+    "system": 93.93939393939394
+   },
+   "goal_reached_without_injected_failure": {
+    "runs": 27,
+    "baseline": 81.48148148148148,
+    "system": 92.5925925925926
+   },
+   "goal_reached_with_injected_failure": {
+    "runs": 6,
+    "baseline": 0.0,
+    "system": 100.0
+   },
+   "unsafe_or_invalid_attempted": {
+    "baseline": 5,
+    "system": 0
+   },
+   "runs_with_unsafe_or_invalid": {
+    "baseline": 9.090909090909092,
+    "system": 0.0
+   },
+   "plan_len_over_optimal": {
+    "baseline": 1.3,
+    "system": 1.28
+   },
+   "triage_exact_rate": 81.81818181818181,
+   "triage_fault_acc": 0.94,
+   "triage_sector_acc": 0.86,
+   "avg_llm_rounds": 1.32,
+   "fallback_rate": 3.0303030303030303,
+   "llm_fixed_after_feedback": 15.151515151515152,
+   "replan_recovery_rate": 100.0,
+   "replan_runs": 6,
+   "latency_s": {
+    "baseline": null,
+    "system": 25.24
    }
   }
  },
  "by_model": {
   "openai/gpt-oss-20b": {
    "power": {
-    "runs": 5,
+    "runs": 10,
     "scenarios": 5,
     "valid_plan_rate": {
      "baseline": 80.0,
@@ -200,12 +246,12 @@
      "system": 80.0
     },
     "goal_reached_without_injected_failure": {
-     "runs": 4,
+     "runs": 8,
      "baseline": 75.0,
      "system": 75.0
     },
     "goal_reached_with_injected_failure": {
-     "runs": 1,
+     "runs": 2,
      "baseline": 0.0,
      "system": 100.0
     },
@@ -228,17 +274,17 @@
     "fallback_rate": 0.0,
     "llm_fixed_after_feedback": 0.0,
     "replan_recovery_rate": 100.0,
-    "replan_runs": 1,
+    "replan_runs": 2,
     "latency_s": {
      "baseline": null,
-     "system": 15.52
+     "system": 15.0
     }
    },
    "hardware": {
-    "runs": 5,
+    "runs": 10,
     "scenarios": 5,
     "valid_plan_rate": {
-     "baseline": 80.0,
+     "baseline": 90.0,
      "system": 100.0
     },
     "goal_reached_rate": {
@@ -246,12 +292,12 @@
      "system": 100.0
     },
     "goal_reached_without_injected_failure": {
-     "runs": 4,
+     "runs": 8,
      "baseline": 100.0,
      "system": 100.0
     },
     "goal_reached_with_injected_failure": {
-     "runs": 1,
+     "runs": 2,
      "baseline": 0.0,
      "system": 100.0
     },
@@ -260,40 +306,40 @@
      "system": 0
     },
     "runs_with_unsafe_or_invalid": {
-     "baseline": 20.0,
+     "baseline": 10.0,
      "system": 0.0
     },
     "plan_len_over_optimal": {
-     "baseline": 1.03,
+     "baseline": 1.02,
      "system": 1.0
     },
     "triage_exact_rate": 100.0,
     "triage_fault_acc": 1.0,
     "triage_sector_acc": 1.0,
-    "avg_llm_rounds": 1.2,
+    "avg_llm_rounds": 1.1,
     "fallback_rate": 0.0,
-    "llm_fixed_after_feedback": 20.0,
+    "llm_fixed_after_feedback": 10.0,
     "replan_recovery_rate": 100.0,
-    "replan_runs": 1,
+    "replan_runs": 2,
     "latency_s": {
      "baseline": null,
-     "system": 20.61
+     "system": 18.45
     }
    },
    "link": {
-    "runs": 5,
+    "runs": 8,
     "scenarios": 5,
     "valid_plan_rate": {
-     "baseline": 80.0,
+     "baseline": 75.0,
      "system": 100.0
     },
     "goal_reached_rate": {
-     "baseline": 80.0,
+     "baseline": 75.0,
      "system": 100.0
     },
     "goal_reached_without_injected_failure": {
-     "runs": 5,
-     "baseline": 80.0,
+     "runs": 8,
+     "baseline": 75.0,
      "system": 100.0
     },
     "goal_reached_with_injected_failure": {
@@ -302,45 +348,45 @@
      "system": 0.0
     },
     "unsafe_or_invalid_attempted": {
-     "baseline": 2,
+     "baseline": 4,
      "system": 0
     },
     "runs_with_unsafe_or_invalid": {
-     "baseline": 20.0,
+     "baseline": 25.0,
      "system": 0.0
     },
     "plan_len_over_optimal": {
-     "baseline": 1.6,
-     "system": 1.6
+     "baseline": 1.94,
+     "system": 1.94
     },
     "triage_exact_rate": 100.0,
     "triage_fault_acc": 1.0,
     "triage_sector_acc": 1.0,
-    "avg_llm_rounds": 1.2,
+    "avg_llm_rounds": 1.25,
     "fallback_rate": 0.0,
-    "llm_fixed_after_feedback": 20.0,
+    "llm_fixed_after_feedback": 25.0,
     "replan_recovery_rate": null,
     "replan_runs": 0,
     "latency_s": {
      "baseline": null,
-     "system": 19.67
+     "system": 17.54
     }
    },
-   "all": {
-    "runs": 15,
-    "scenarios": 15,
+   "multi": {
+    "runs": 5,
+    "scenarios": 5,
     "valid_plan_rate": {
-     "baseline": 80.0,
-     "system": 93.33333333333333
+     "baseline": 40.0,
+     "system": 100.0
     },
     "goal_reached_rate": {
-     "baseline": 73.33333333333333,
-     "system": 93.33333333333333
+     "baseline": 40.0,
+     "system": 100.0
     },
     "goal_reached_without_injected_failure": {
-     "runs": 13,
-     "baseline": 84.61538461538461,
-     "system": 92.3076923076923
+     "runs": 3,
+     "baseline": 66.66666666666667,
+     "system": 100.0
     },
     "goal_reached_with_injected_failure": {
      "runs": 2,
@@ -348,28 +394,74 @@
      "system": 100.0
     },
     "unsafe_or_invalid_attempted": {
-     "baseline": 3,
+     "baseline": 0,
      "system": 0
     },
     "runs_with_unsafe_or_invalid": {
-     "baseline": 13.333333333333334,
+     "baseline": 0.0,
      "system": 0.0
     },
     "plan_len_over_optimal": {
-     "baseline": 1.23,
-     "system": 1.21
+     "baseline": 1.34,
+     "system": 1.26
     },
-    "triage_exact_rate": 93.33333333333333,
-    "triage_fault_acc": 0.93,
-    "triage_sector_acc": 0.93,
-    "avg_llm_rounds": 1.14,
-    "fallback_rate": 0.0,
-    "llm_fixed_after_feedback": 13.333333333333334,
+    "triage_exact_rate": 20.0,
+    "triage_fault_acc": 1.0,
+    "triage_sector_acc": 0.5,
+    "avg_llm_rounds": 2.4,
+    "fallback_rate": 20.0,
+    "llm_fixed_after_feedback": 40.0,
     "replan_recovery_rate": 100.0,
     "replan_runs": 2,
     "latency_s": {
      "baseline": null,
-     "system": 18.82
+     "system": 67.5
+    }
+   },
+   "all": {
+    "runs": 33,
+    "scenarios": 20,
+    "valid_plan_rate": {
+     "baseline": 75.75757575757575,
+     "system": 93.93939393939394
+    },
+    "goal_reached_rate": {
+     "baseline": 66.66666666666667,
+     "system": 93.93939393939394
+    },
+    "goal_reached_without_injected_failure": {
+     "runs": 27,
+     "baseline": 81.48148148148148,
+     "system": 92.5925925925926
+    },
+    "goal_reached_with_injected_failure": {
+     "runs": 6,
+     "baseline": 0.0,
+     "system": 100.0
+    },
+    "unsafe_or_invalid_attempted": {
+     "baseline": 5,
+     "system": 0
+    },
+    "runs_with_unsafe_or_invalid": {
+     "baseline": 9.090909090909092,
+     "system": 0.0
+    },
+    "plan_len_over_optimal": {
+     "baseline": 1.3,
+     "system": 1.28
+    },
+    "triage_exact_rate": 81.81818181818181,
+    "triage_fault_acc": 0.94,
+    "triage_sector_acc": 0.86,
+    "avg_llm_rounds": 1.32,
+    "fallback_rate": 3.0303030303030303,
+    "llm_fixed_after_feedback": 15.151515151515152,
+    "replan_recovery_rate": 100.0,
+    "replan_runs": 6,
+    "latency_s": {
+     "baseline": null,
+     "system": 25.24
     }
    }
   }
@@ -1280,6 +1372,1190 @@
      "repair_link(T3)",
      "restore_service(S3, T3)",
      "notify_customers(S3)"
+    ],
+    "invalid_reason": null,
+    "latency_s": null,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 5
+   }
+  },
+  {
+   "version": 2,
+   "scenario": "M1",
+   "type": "multi",
+   "run": 1,
+   "model": "openai/gpt-oss-20b",
+   "ts": "2026-11-27T13:44:05",
+   "optimal_len": 8,
+   "planned_sectors": [
+    "S2",
+    "S3"
+   ],
+   "triage": {
+    "ok": true,
+    "exact": true,
+    "fault_acc": 1.0,
+    "sector_acc": 1.0,
+    "error": null,
+    "latency_s": 38.11
+   },
+   "system": {
+    "source": "llm_verified",
+    "valid": true,
+    "rounds": 1,
+    "plan_len": 11,
+    "steps": [
+     "diagnose(T2)",
+     "dispatch_technician(T2)",
+     "repair_link(T2)",
+     "diagnose(T3)",
+     "dispatch_technician(T3)",
+     "restore_power(T3)",
+     "restart_node(T3)",
+     "restore_service(S2, T2)",
+     "restore_service(S3, T3)",
+     "notify_customers(S2)",
+     "notify_customers(S3)"
+    ],
+    "round_reasons": [],
+    "latency_s": 49.22,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 11
+   },
+   "baseline": {
+    "valid": true,
+    "plan_len": 11,
+    "steps": [
+     "diagnose(T2)",
+     "dispatch_technician(T2)",
+     "repair_link(T2)",
+     "diagnose(T3)",
+     "dispatch_technician(T3)",
+     "restore_power(T3)",
+     "restart_node(T3)",
+     "restore_service(S2, T2)",
+     "restore_service(S3, T3)",
+     "notify_customers(S2)",
+     "notify_customers(S3)"
+    ],
+    "invalid_reason": null,
+    "latency_s": null,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 11
+   }
+  },
+  {
+   "version": 2,
+   "scenario": "M2",
+   "type": "multi",
+   "run": 1,
+   "model": "openai/gpt-oss-20b",
+   "ts": "2026-11-27T13:45:04",
+   "optimal_len": 8,
+   "planned_sectors": [
+    "S4",
+    "S5"
+   ],
+   "triage": {
+    "ok": true,
+    "exact": false,
+    "fault_acc": 1.0,
+    "sector_acc": 0.5,
+    "error": null,
+    "latency_s": 28.45
+   },
+   "system": {
+    "source": "planner_fallback",
+    "valid": true,
+    "rounds": 4,
+    "plan_len": 8,
+    "steps": [
+     "diagnose(T5)",
+     "dispatch_technician(T5)",
+     "restore_power(T5)",
+     "restart_node(T5)",
+     "restore_service(S5, T5)",
+     "reroute_traffic(S4, T5)",
+     "notify_customers(S5)",
+     "notify_customers(S4)"
+    ],
+    "round_reasons": [
+     "LLM output could not be used: BadRequestError: Error code: 400 - {'error': {'message': \"Failed to validate JSON. Please adjust your prompt. See 'failed_generation' for more details.\", 'type': 'invalid_request_error', 'code': 'json_validate_failed'",
+     "LLM output could not be used: BadRequestError: Error code: 400 - {'error': {'message': \"Failed to validate JSON. Please adjust your prompt. See 'failed_generation' for more details.\", 'type': 'invalid_request_error', 'code': 'json_validate_failed'",
+     "step 7: repair_link(T4) needs link_cut(T4)",
+     "all steps can run, but these goals are not reached: customers_notified(S5)"
+    ],
+    "latency_s": 103.98,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 1,
+    "steps_executed": 10
+   },
+   "baseline": {
+    "valid": false,
+    "plan_len": 0,
+    "steps": [],
+    "invalid_reason": "LLM output could not be used: BadRequestError: Error code: 400 - {'error': {'message': \"Failed to validate JSON. Please adjust your prompt. See 'failed_generation' for more details.\", 'type': 'invalid_request_error', 'code': 'json_validate_failed'",
+    "latency_s": null,
+    "status": "failed",
+    "goal_reached": false,
+    "goals_unmet": [
+     "sector_served(S4)",
+     "customers_notified(S4)",
+     "sector_served(S5)",
+     "customers_notified(S5)"
+    ],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 0
+   }
+  },
+  {
+   "version": 2,
+   "scenario": "M3",
+   "type": "multi",
+   "run": 1,
+   "model": "openai/gpt-oss-20b",
+   "ts": "2026-11-27T13:47:18",
+   "optimal_len": 8,
+   "planned_sectors": [
+    "S1",
+    "S2"
+   ],
+   "triage": {
+    "ok": true,
+    "exact": false,
+    "fault_acc": 1.0,
+    "sector_acc": 0.5,
+    "error": null,
+    "latency_s": 37.54
+   },
+   "system": {
+    "source": "llm_verified",
+    "valid": true,
+    "rounds": 1,
+    "plan_len": 12,
+    "steps": [
+     "diagnose(T1)",
+     "dispatch_technician(T1)",
+     "restore_power(T1)",
+     "restart_node(T1)",
+     "diagnose(T2)",
+     "dispatch_technician(T2)",
+     "repair_hardware(T2)",
+     "restart_node(T2)",
+     "restore_service(S1, T1)",
+     "restore_service(S2, T2)",
+     "notify_customers(S1)",
+     "notify_customers(S2)"
+    ],
+    "round_reasons": [],
+    "latency_s": 47.5,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 12
+   },
+   "baseline": {
+    "valid": true,
+    "plan_len": 12,
+    "steps": [
+     "diagnose(T1)",
+     "dispatch_technician(T1)",
+     "restore_power(T1)",
+     "restart_node(T1)",
+     "diagnose(T2)",
+     "dispatch_technician(T2)",
+     "repair_hardware(T2)",
+     "restart_node(T2)",
+     "restore_service(S1, T1)",
+     "restore_service(S2, T2)",
+     "notify_customers(S1)",
+     "notify_customers(S2)"
+    ],
+    "invalid_reason": null,
+    "latency_s": null,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 12
+   }
+  },
+  {
+   "version": 2,
+   "scenario": "M4",
+   "type": "multi",
+   "run": 1,
+   "model": "openai/gpt-oss-20b",
+   "ts": "2026-11-27T13:48:08",
+   "optimal_len": 7,
+   "planned_sectors": [
+    "S5",
+    "S6"
+   ],
+   "triage": {
+    "ok": true,
+    "exact": false,
+    "fault_acc": 1.0,
+    "sector_acc": 0.5,
+    "error": null,
+    "latency_s": 20.9
+   },
+   "system": {
+    "source": "llm_verified",
+    "valid": true,
+    "rounds": 2,
+    "plan_len": 10,
+    "steps": [
+     "diagnose(T5)",
+     "diagnose(T6)",
+     "dispatch_technician(T5)",
+     "dispatch_technician(T6)",
+     "restore_power(T6)",
+     "repair_link(T5)",
+     "restore_service(S5, T5)",
+     "notify_customers(S5)",
+     "reroute_traffic(S6, T5)",
+     "notify_customers(S6)"
+    ],
+    "round_reasons": [
+     "all steps can run, but these goals are not reached: sector_served(S6), customers_notified(S6)"
+    ],
+    "latency_s": 47.44,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 10
+   },
+   "baseline": {
+    "valid": false,
+    "plan_len": 8,
+    "steps": [
+     "diagnose(T5)",
+     "diagnose(T6)",
+     "dispatch_technician(T5)",
+     "dispatch_technician(T6)",
+     "restore_power(T6)",
+     "repair_link(T5)",
+     "restore_service(S5, T5)",
+     "notify_customers(S5)"
+    ],
+    "invalid_reason": "all steps can run, but these goals are not reached: sector_served(S6), customers_notified(S6)",
+    "latency_s": null,
+    "status": "failed",
+    "goal_reached": false,
+    "goals_unmet": [
+     "sector_served(S6)",
+     "customers_notified(S6)"
+    ],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 8
+   }
+  },
+  {
+   "version": 2,
+   "scenario": "M5",
+   "type": "multi",
+   "run": 1,
+   "model": "openai/gpt-oss-20b",
+   "ts": "2026-11-27T13:49:01",
+   "optimal_len": 17,
+   "planned_sectors": [
+    "S1",
+    "S4",
+    "S6"
+   ],
+   "triage": {
+    "ok": true,
+    "exact": false,
+    "fault_acc": 1.0,
+    "sector_acc": 0.0,
+    "error": null,
+    "latency_s": 5.57
+   },
+   "system": {
+    "source": "llm_verified",
+    "valid": true,
+    "rounds": 4,
+    "plan_len": 17,
+    "steps": [
+     "diagnose(T1)",
+     "diagnose(T4)",
+     "diagnose(T6)",
+     "dispatch_technician(T1)",
+     "dispatch_technician(T4)",
+     "dispatch_technician(T6)",
+     "restore_power(T4)",
+     "repair_hardware(T6)",
+     "repair_link(T1)",
+     "restart_node(T4)",
+     "restart_node(T6)",
+     "restore_service(S1, T1)",
+     "restore_service(S4, T4)",
+     "restore_service(S6, T6)",
+     "notify_customers(S1)",
+     "notify_customers(S4)",
+     "notify_customers(S6)"
+    ],
+    "round_reasons": [
+     "LLM output could not be used: BadRequestError: Error code: 400 - {'error': {'message': \"Failed to validate JSON. Please adjust your prompt. See 'failed_generation' for more details.\", 'type': 'invalid_request_error', 'code': 'json_validate_failed'",
+     "LLM output could not be used: BadRequestError: Error code: 400 - {'error': {'message': \"Failed to validate JSON. Please adjust your prompt. See 'failed_generation' for more details.\", 'type': 'invalid_request_error', 'code': 'json_validate_failed'",
+     "LLM output could not be used: BadRequestError: Error code: 400 - {'error': {'message': \"Failed to validate JSON. Please adjust your prompt. See 'failed_generation' for more details.\", 'type': 'invalid_request_error', 'code': 'json_validate_failed'"
+    ],
+    "latency_s": 89.38,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 1,
+    "steps_executed": 19
+   },
+   "baseline": {
+    "valid": false,
+    "plan_len": 0,
+    "steps": [],
+    "invalid_reason": "LLM output could not be used: BadRequestError: Error code: 400 - {'error': {'message': \"Failed to validate JSON. Please adjust your prompt. See 'failed_generation' for more details.\", 'type': 'invalid_request_error', 'code': 'json_validate_failed'",
+    "latency_s": null,
+    "status": "failed",
+    "goal_reached": false,
+    "goals_unmet": [
+     "sector_served(S1)",
+     "customers_notified(S1)",
+     "sector_served(S4)",
+     "customers_notified(S4)",
+     "sector_served(S6)",
+     "customers_notified(S6)",
+     "backhaul_ok(T1)",
+     "node_up(T4)",
+     "node_up(T6)"
+    ],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 0
+   }
+  },
+  {
+   "version": 2,
+   "scenario": "P1",
+   "type": "power",
+   "run": 2,
+   "model": "openai/gpt-oss-20b",
+   "ts": "2026-11-27T13:50:52",
+   "optimal_len": 6,
+   "planned_sectors": [
+    "S3"
+   ],
+   "triage": {
+    "ok": true,
+    "exact": true,
+    "fault_acc": 1.0,
+    "sector_acc": 1.0,
+    "error": null,
+    "latency_s": 7.8
+   },
+   "system": {
+    "source": "llm_verified",
+    "valid": true,
+    "rounds": 1,
+    "plan_len": 6,
+    "steps": [
+     "diagnose(T3)",
+     "dispatch_technician(T3)",
+     "restore_power(T3)",
+     "restart_node(T3)",
+     "restore_service(S3, T3)",
+     "notify_customers(S3)"
+    ],
+    "round_reasons": [],
+    "latency_s": 16.81,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 1,
+    "steps_executed": 8
+   },
+   "baseline": {
+    "valid": true,
+    "plan_len": 6,
+    "steps": [
+     "diagnose(T3)",
+     "dispatch_technician(T3)",
+     "restore_power(T3)",
+     "restart_node(T3)",
+     "restore_service(S3, T3)",
+     "notify_customers(S3)"
+    ],
+    "invalid_reason": null,
+    "latency_s": null,
+    "status": "failed",
+    "goal_reached": false,
+    "goals_unmet": [
+     "sector_served(S3)",
+     "customers_notified(S3)",
+     "node_up(T3)"
+    ],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 4
+   }
+  },
+  {
+   "version": 2,
+   "scenario": "P2",
+   "type": "power",
+   "run": 2,
+   "model": "openai/gpt-oss-20b",
+   "ts": "2026-11-27T13:51:28",
+   "optimal_len": 6,
+   "planned_sectors": [
+    "S1"
+   ],
+   "triage": {
+    "ok": true,
+    "exact": true,
+    "fault_acc": 1.0,
+    "sector_acc": 1.0,
+    "error": null,
+    "latency_s": 6.35
+   },
+   "system": {
+    "source": "llm_verified",
+    "valid": true,
+    "rounds": 1,
+    "plan_len": 6,
+    "steps": [
+     "diagnose(T1)",
+     "dispatch_technician(T1)",
+     "restore_power(T1)",
+     "restart_node(T1)",
+     "restore_service(S1, T1)",
+     "notify_customers(S1)"
+    ],
+    "round_reasons": [],
+    "latency_s": 16.2,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 6
+   },
+   "baseline": {
+    "valid": true,
+    "plan_len": 6,
+    "steps": [
+     "diagnose(T1)",
+     "dispatch_technician(T1)",
+     "restore_power(T1)",
+     "restart_node(T1)",
+     "restore_service(S1, T1)",
+     "notify_customers(S1)"
+    ],
+    "invalid_reason": null,
+    "latency_s": null,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 6
+   }
+  },
+  {
+   "version": 2,
+   "scenario": "P3",
+   "type": "power",
+   "run": 2,
+   "model": "openai/gpt-oss-20b",
+   "ts": "2026-11-27T13:51:59",
+   "optimal_len": 6,
+   "planned_sectors": null,
+   "triage": {
+    "ok": false,
+    "exact": false,
+    "fault_acc": 0.0,
+    "sector_acc": 0.0,
+    "error": "investigation failed on every model: BadRequestError: Error code: 400 - {'error': {'message': \"Tool call validation failed: tool call validation failed: attempted to call tool 'run_diagnostics<|channel|>commentary' which was not in request.tools\", 'type'",
+    "latency_s": 1.76
+   },
+   "system": {
+    "valid": false,
+    "goal_reached": false,
+    "skipped": "triage failed"
+   },
+   "baseline": {
+    "valid": false,
+    "goal_reached": false,
+    "skipped": "triage failed"
+   }
+  },
+  {
+   "version": 2,
+   "scenario": "P4",
+   "type": "power",
+   "run": 2,
+   "model": "openai/gpt-oss-20b",
+   "ts": "2026-11-27T13:52:25",
+   "optimal_len": 6,
+   "planned_sectors": [
+    "S6"
+   ],
+   "triage": {
+    "ok": true,
+    "exact": true,
+    "fault_acc": 1.0,
+    "sector_acc": 1.0,
+    "error": null,
+    "latency_s": 5.73
+   },
+   "system": {
+    "source": "llm_verified",
+    "valid": true,
+    "rounds": 1,
+    "plan_len": 6,
+    "steps": [
+     "diagnose(T6)",
+     "dispatch_technician(T6)",
+     "restore_power(T6)",
+     "restart_node(T6)",
+     "restore_service(S6, T6)",
+     "notify_customers(S6)"
+    ],
+    "round_reasons": [],
+    "latency_s": 11.59,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 6
+   },
+   "baseline": {
+    "valid": true,
+    "plan_len": 6,
+    "steps": [
+     "diagnose(T6)",
+     "dispatch_technician(T6)",
+     "restore_power(T6)",
+     "restart_node(T6)",
+     "restore_service(S6, T6)",
+     "notify_customers(S6)"
+    ],
+    "invalid_reason": null,
+    "latency_s": null,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 6
+   }
+  },
+  {
+   "version": 2,
+   "scenario": "P5",
+   "type": "power",
+   "run": 2,
+   "model": "openai/gpt-oss-20b",
+   "ts": "2026-11-27T13:52:58",
+   "optimal_len": 6,
+   "planned_sectors": [
+    "S5"
+   ],
+   "triage": {
+    "ok": true,
+    "exact": true,
+    "fault_acc": 1.0,
+    "sector_acc": 1.0,
+    "error": null,
+    "latency_s": 6.91
+   },
+   "system": {
+    "source": "llm_verified",
+    "valid": true,
+    "rounds": 1,
+    "plan_len": 6,
+    "steps": [
+     "diagnose(T5)",
+     "dispatch_technician(T5)",
+     "restore_power(T5)",
+     "restart_node(T5)",
+     "restore_service(S5, T5)",
+     "notify_customers(S5)"
+    ],
+    "round_reasons": [],
+    "latency_s": 13.31,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 6
+   },
+   "baseline": {
+    "valid": true,
+    "plan_len": 6,
+    "steps": [
+     "diagnose(T5)",
+     "dispatch_technician(T5)",
+     "restore_power(T5)",
+     "restart_node(T5)",
+     "restore_service(S5, T5)",
+     "notify_customers(S5)"
+    ],
+    "invalid_reason": null,
+    "latency_s": null,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 6
+   }
+  },
+  {
+   "version": 2,
+   "scenario": "H1",
+   "type": "hardware",
+   "run": 2,
+   "model": "openai/gpt-oss-20b",
+   "ts": "2026-11-27T13:53:31",
+   "optimal_len": 6,
+   "planned_sectors": [
+    "S3"
+   ],
+   "triage": {
+    "ok": true,
+    "exact": true,
+    "fault_acc": 1.0,
+    "sector_acc": 1.0,
+    "error": null,
+    "latency_s": 6.97
+   },
+   "system": {
+    "source": "llm_verified",
+    "valid": true,
+    "rounds": 1,
+    "plan_len": 6,
+    "steps": [
+     "diagnose(T3)",
+     "dispatch_technician(T3)",
+     "repair_hardware(T3)",
+     "restart_node(T3)",
+     "restore_service(S3, T3)",
+     "notify_customers(S3)"
+    ],
+    "round_reasons": [],
+    "latency_s": 20.32,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 6
+   },
+   "baseline": {
+    "valid": true,
+    "plan_len": 6,
+    "steps": [
+     "diagnose(T3)",
+     "dispatch_technician(T3)",
+     "repair_hardware(T3)",
+     "restart_node(T3)",
+     "restore_service(S3, T3)",
+     "notify_customers(S3)"
+    ],
+    "invalid_reason": null,
+    "latency_s": null,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 6
+   }
+  },
+  {
+   "version": 2,
+   "scenario": "H2",
+   "type": "hardware",
+   "run": 2,
+   "model": "openai/gpt-oss-20b",
+   "ts": "2026-11-27T13:54:13",
+   "optimal_len": 6,
+   "planned_sectors": [
+    "S2"
+   ],
+   "triage": {
+    "ok": true,
+    "exact": true,
+    "fault_acc": 1.0,
+    "sector_acc": 1.0,
+    "error": null,
+    "latency_s": 8.47
+   },
+   "system": {
+    "source": "llm_verified",
+    "valid": true,
+    "rounds": 1,
+    "plan_len": 6,
+    "steps": [
+     "diagnose(T2)",
+     "dispatch_technician(T2)",
+     "repair_hardware(T2)",
+     "restart_node(T2)",
+     "restore_service(S2, T2)",
+     "notify_customers(S2)"
+    ],
+    "round_reasons": [],
+    "latency_s": 17.68,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 6
+   },
+   "baseline": {
+    "valid": true,
+    "plan_len": 6,
+    "steps": [
+     "diagnose(T2)",
+     "dispatch_technician(T2)",
+     "repair_hardware(T2)",
+     "restart_node(T2)",
+     "restore_service(S2, T2)",
+     "notify_customers(S2)"
+    ],
+    "invalid_reason": null,
+    "latency_s": null,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 6
+   }
+  },
+  {
+   "version": 2,
+   "scenario": "H3",
+   "type": "hardware",
+   "run": 2,
+   "model": "openai/gpt-oss-20b",
+   "ts": "2026-11-27T13:54:49",
+   "optimal_len": 6,
+   "planned_sectors": [
+    "S5"
+   ],
+   "triage": {
+    "ok": true,
+    "exact": true,
+    "fault_acc": 1.0,
+    "sector_acc": 1.0,
+    "error": null,
+    "latency_s": 6.37
+   },
+   "system": {
+    "source": "llm_verified",
+    "valid": true,
+    "rounds": 1,
+    "plan_len": 6,
+    "steps": [
+     "diagnose(T5)",
+     "dispatch_technician(T5)",
+     "repair_hardware(T5)",
+     "restart_node(T5)",
+     "restore_service(S5, T5)",
+     "notify_customers(S5)"
+    ],
+    "round_reasons": [],
+    "latency_s": 9.18,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 1,
+    "steps_executed": 8
+   },
+   "baseline": {
+    "valid": true,
+    "plan_len": 6,
+    "steps": [
+     "diagnose(T5)",
+     "dispatch_technician(T5)",
+     "repair_hardware(T5)",
+     "restart_node(T5)",
+     "restore_service(S5, T5)",
+     "notify_customers(S5)"
+    ],
+    "invalid_reason": null,
+    "latency_s": null,
+    "status": "failed",
+    "goal_reached": false,
+    "goals_unmet": [
+     "sector_served(S5)",
+     "customers_notified(S5)",
+     "node_up(T5)"
+    ],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 4
+   }
+  },
+  {
+   "version": 2,
+   "scenario": "H4",
+   "type": "hardware",
+   "run": 2,
+   "model": "openai/gpt-oss-20b",
+   "ts": "2026-11-27T13:55:19",
+   "optimal_len": 6,
+   "planned_sectors": [
+    "S6"
+   ],
+   "triage": {
+    "ok": true,
+    "exact": true,
+    "fault_acc": 1.0,
+    "sector_acc": 1.0,
+    "error": null,
+    "latency_s": 7.54
+   },
+   "system": {
+    "source": "llm_verified",
+    "valid": true,
+    "rounds": 1,
+    "plan_len": 6,
+    "steps": [
+     "diagnose(T6)",
+     "dispatch_technician(T6)",
+     "repair_hardware(T6)",
+     "restart_node(T6)",
+     "restore_service(S6, T6)",
+     "notify_customers(S6)"
+    ],
+    "round_reasons": [],
+    "latency_s": 11.66,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 6
+   },
+   "baseline": {
+    "valid": true,
+    "plan_len": 6,
+    "steps": [
+     "diagnose(T6)",
+     "dispatch_technician(T6)",
+     "repair_hardware(T6)",
+     "restart_node(T6)",
+     "restore_service(S6, T6)",
+     "notify_customers(S6)"
+    ],
+    "invalid_reason": null,
+    "latency_s": null,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 6
+   }
+  },
+  {
+   "version": 2,
+   "scenario": "H5",
+   "type": "hardware",
+   "run": 2,
+   "model": "openai/gpt-oss-20b",
+   "ts": "2026-11-27T13:55:53",
+   "optimal_len": 6,
+   "planned_sectors": [
+    "S1"
+   ],
+   "triage": {
+    "ok": true,
+    "exact": true,
+    "fault_acc": 1.0,
+    "sector_acc": 1.0,
+    "error": null,
+    "latency_s": 10.03
+   },
+   "system": {
+    "source": "llm_verified",
+    "valid": true,
+    "rounds": 1,
+    "plan_len": 6,
+    "steps": [
+     "diagnose(T1)",
+     "dispatch_technician(T1)",
+     "repair_hardware(T1)",
+     "restart_node(T1)",
+     "restore_service(S1, T1)",
+     "notify_customers(S1)"
+    ],
+    "round_reasons": [],
+    "latency_s": 22.58,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 6
+   },
+   "baseline": {
+    "valid": true,
+    "plan_len": 6,
+    "steps": [
+     "diagnose(T1)",
+     "dispatch_technician(T1)",
+     "repair_hardware(T1)",
+     "restart_node(T1)",
+     "restore_service(S1, T1)",
+     "notify_customers(S1)"
+    ],
+    "invalid_reason": null,
+    "latency_s": null,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 6
+   }
+  },
+  {
+   "version": 2,
+   "scenario": "L1",
+   "type": "link",
+   "run": 2,
+   "model": "openai/gpt-oss-20b",
+   "ts": "2026-11-27T13:56:32",
+   "optimal_len": 2,
+   "planned_sectors": [
+    "S2"
+   ],
+   "triage": {
+    "ok": true,
+    "exact": true,
+    "fault_acc": 1.0,
+    "sector_acc": 1.0,
+    "error": null,
+    "latency_s": 6.53
+   },
+   "system": {
+    "source": "llm_verified",
+    "valid": true,
+    "rounds": 2,
+    "plan_len": 5,
+    "steps": [
+     "diagnose(T2)",
+     "dispatch_technician(T2)",
+     "repair_link(T2)",
+     "restore_service(S2, T2)",
+     "notify_customers(S2)"
+    ],
+    "round_reasons": [
+     "step 3: 'T2-C0' is not a known node (parameter n)"
+    ],
+    "latency_s": 15.51,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 5
+   },
+   "baseline": {
+    "valid": false,
+    "plan_len": 5,
+    "steps": [
+     "diagnose(T2)",
+     "dispatch_technician(T2)",
+     "repair_link(T2-C0)",
+     "restore_service(S2, T2)",
+     "notify_customers(S2)"
+    ],
+    "invalid_reason": "step 3: 'T2-C0' is not a known node (parameter n)",
+    "latency_s": null,
+    "status": "failed",
+    "goal_reached": false,
+    "goals_unmet": [
+     "sector_served(S2)"
+    ],
+    "attempted_invalid": 2,
+    "blocked_caught": 2,
+    "replans": 0,
+    "steps_executed": 5
+   }
+  },
+  {
+   "version": 2,
+   "scenario": "L2",
+   "type": "link",
+   "run": 2,
+   "model": "openai/gpt-oss-20b",
+   "ts": "2026-11-27T13:57:09",
+   "optimal_len": 2,
+   "planned_sectors": [
+    "S4"
+   ],
+   "triage": {
+    "ok": true,
+    "exact": true,
+    "fault_acc": 1.0,
+    "sector_acc": 1.0,
+    "error": null,
+    "latency_s": 7.83
+   },
+   "system": {
+    "source": "llm_verified",
+    "valid": true,
+    "rounds": 1,
+    "plan_len": 5,
+    "steps": [
+     "diagnose(T4)",
+     "dispatch_technician(T4)",
+     "repair_link(T4)",
+     "restore_service(S4, T4)",
+     "notify_customers(S4)"
+    ],
+    "round_reasons": [],
+    "latency_s": 19.63,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 5
+   },
+   "baseline": {
+    "valid": true,
+    "plan_len": 5,
+    "steps": [
+     "diagnose(T4)",
+     "dispatch_technician(T4)",
+     "repair_link(T4)",
+     "restore_service(S4, T4)",
+     "notify_customers(S4)"
+    ],
+    "invalid_reason": null,
+    "latency_s": null,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 5
+   }
+  },
+  {
+   "version": 2,
+   "scenario": "L3",
+   "type": "link",
+   "run": 2,
+   "model": "openai/gpt-oss-20b",
+   "ts": "2026-11-27T13:57:46",
+   "optimal_len": 2,
+   "planned_sectors": [
+    "S6"
+   ],
+   "triage": {
+    "ok": true,
+    "exact": true,
+    "fault_acc": 1.0,
+    "sector_acc": 1.0,
+    "error": null,
+    "latency_s": 4.94
+   },
+   "system": {
+    "source": "llm_verified",
+    "valid": true,
+    "rounds": 1,
+    "plan_len": 5,
+    "steps": [
+     "diagnose(T6)",
+     "dispatch_technician(T6)",
+     "repair_link(T6)",
+     "restore_service(S6, T6)",
+     "notify_customers(S6)"
+    ],
+    "round_reasons": [],
+    "latency_s": 6.83,
+    "status": "completed",
+    "goal_reached": true,
+    "goals_unmet": [],
+    "attempted_invalid": 0,
+    "blocked_caught": 0,
+    "replans": 0,
+    "steps_executed": 5
+   },
+   "baseline": {
+    "valid": true,
+    "plan_len": 5,
+    "steps": [
+     "diagnose(T6)",
+     "dispatch_technician(T6)",
+     "repair_link(T6)",
+     "restore_service(S6, T6)",
+     "notify_customers(S6)"
     ],
     "invalid_reason": null,
     "latency_s": null,

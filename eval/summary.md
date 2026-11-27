@@ -1,36 +1,37 @@
 # Evaluation summary
 
-15 runs over 15 scenarios; model `openai/gpt-oss-20b`; goal reached is checked on the true network after execution.
+33 runs over 20 scenarios; model `openai/gpt-oss-20b`; goal reached is checked on the true network after execution.
 
-**Headline:** incidents fully resolved 93% (system) vs 73% (LLM-only baseline); valid plans 93% vs 80%; unsafe or invalid actions attempted: 0 vs 3.
+**Headline:** incidents fully resolved 94% (system) vs 67% (LLM-only baseline); valid plans 94% vs 76%; unsafe or invalid actions attempted: 0 vs 5.
 
 | Metric | Baseline | System |
 | --- | --- | --- |
-| Valid-plan rate | 80% | 93% |
-| Goal reached after execution | 73% | 93% |
-| ...without injected failures (13 runs) | 85% | 92% |
-| ...with an injected restart failure (2 runs) | 0% | 100% |
-| Unsafe or invalid actions attempted (total) | 3 | 0 |
-| Runs with any unsafe or invalid action | 13% | 0% |
-| Plan length / optimal | 1.23 | 1.21 |
-| Latency per incident (s) | — (shares the first call) | 18.82 |
+| Valid-plan rate | 76% | 94% |
+| Goal reached after execution | 67% | 94% |
+| ...without injected failures (27 runs) | 81% | 93% |
+| ...with an injected restart failure (6 runs) | 0% | 100% |
+| Unsafe or invalid actions attempted (total) | 5 | 0 |
+| Runs with any unsafe or invalid action | 9% | 0% |
+| Plan length / optimal | 1.3 | 1.28 |
+| Latency per incident (s) | — (shares the first call) | 25.24 |
 
 | System-only metric | Value |
 | --- | --- |
-| Triage exact match | 93% |
-| Triage fault accuracy / sector accuracy | 0.93 / 0.93 |
-| Average LLM plan rounds | 1.14 |
-| LLM plan fixed after verifier feedback | 13% |
-| Planner fallback rate | 0% |
-| Replan recovery rate | 100% of 2 runs |
+| Triage exact match | 82% |
+| Triage fault accuracy / sector accuracy | 0.94 / 0.86 |
+| Average LLM plan rounds | 1.32 |
+| LLM plan fixed after verifier feedback | 15% |
+| Planner fallback rate | 3% |
+| Replan recovery rate | 100% of 6 runs |
 
 ## By scenario type
 
 | Type | Runs | Valid plans (base / sys) | Goal reached (base / sys) | Unsafe attempts (base / sys) |
 | --- | --- | --- | --- | --- |
-| Power loss | 5 | 80% / 80% | 60% / 80% | 0 / 0 |
-| Hardware fault | 5 | 80% / 100% | 80% / 100% | 1 / 0 |
-| Link cut | 5 | 80% / 100% | 80% / 100% | 2 / 0 |
+| Power loss | 10 | 80% / 80% | 60% / 80% | 0 / 0 |
+| Hardware fault | 10 | 90% / 100% | 80% / 100% | 1 / 0 |
+| Link cut | 8 | 75% / 100% | 75% / 100% | 4 / 0 |
+| Multi-fault | 5 | 40% / 100% | 40% / 100% | 0 / 0 |
 
 ## How to read this
 
